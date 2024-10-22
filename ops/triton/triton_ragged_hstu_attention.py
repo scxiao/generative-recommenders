@@ -231,15 +231,15 @@ def _ragged_hstu_attn_fwd_one_block(  # noqa: C901
     TW,
     PW,
     alpha,
-    MAX_SEQ_LEN,
-    num_buckets,
-    max_pos_ind,
+    NUM_BUCKETS: tl.constexpr,
+    MAX_POS_IND: tl.constexpr,
     max_attn_len,
-    time_bucket_incr,
-    time_bucket_div,
-    time_delta,
+    TIME_BUCKET_INCR: tl.constexpr,
+    TIME_BUCKET_DIV: tl.constexpr,
     bias_ptrs,
     attn_scale,
+    MAX_SEQ_LEN: tl.constexpr,
+    TIME_DELTA: tl.constexpr,
     INVALID_MASK_TYPE: tl.constexpr,
     CAUSAL: tl.constexpr,
     BUCKET_FN: tl.constexpr,
@@ -298,17 +298,17 @@ def _ragged_hstu_attn_fwd_one_block(  # noqa: C901
             else:
                 ts_1 = tl.load(ts_1_ptrs + start_n + 1, mask=mask_n)
             ts = ts_0[:, None] - ts_1[None, :]
-            ts = ts + time_delta
+            ts = ts + TIME_DELTA
             ts = tl.where(ts > 1e-6, ts, 1e-6)
-            ts = ts * (1.0 / time_bucket_incr)
+            ts = ts * (1.0 / TIME_BUCKET_INCR)
             if BUCKET_FN == "log":
                 ts = tl.log(ts)
             elif BUCKET_FN == "sqrt":
                 ts = tl.sqrt(ts)
-            ts = ts * (1.0 / time_bucket_div)
+            ts = ts * (1.0 / TIME_BUCKET_DIV)
             ts = ts.to(tl.int32)
             ts = tl.where(ts > 0, ts, 0)
-            ts = tl.where(ts < num_buckets, ts, num_buckets)
+            ts = tl.where(ts < NUM_BUCKETS, ts, NUM_BUCKETS)
             ts_w = tl.load(
                 TW + ts,
                 mask=mask_m[:, None] and mask_n[None, :],
@@ -316,12 +316,12 @@ def _ragged_hstu_attn_fwd_one_block(  # noqa: C901
             attn_bias = attn_bias + ts_w
         if USE_POS_BIAS:
             if HAS_MAX_POS_IND:
-                offs_pos_w = offs_n_minus_m + max_pos_ind - 1
+                offs_pos_w = offs_n_minus_m + MAX_POS_IND - 1
                 offs_pos_w = tl.where(offs_pos_w > 0, offs_pos_w, 0)
                 offs_pos_w = tl.where(
-                    offs_pos_w < 2 * max_pos_ind - 2,
+                    offs_pos_w < 2 * MAX_POS_IND - 2,
                     offs_pos_w,
-                    2 * max_pos_ind - 2,
+                    2 * MAX_POS_IND - 2,
                 )
             else:
                 offs_pos_w = offs_n_minus_m + MAX_SEQ_LEN - 1
@@ -376,31 +376,31 @@ def _ragged_hstu_attn_fwd_compute(  # noqa C901
     num_targets,
     Scale,
     Out,
-    stride_qm,
-    stride_qh,
-    stride_kn,
-    stride_kh,
-    stride_vn,
-    stride_vh,
-    stride_sz,
-    stride_sm,
-    stride_ts,
-    stride_om,
-    stride_oh,
+    stride_qm: tl.constexpr,
+    stride_qh: tl.constexpr,
+    stride_kn: tl.constexpr,
+    stride_kh: tl.constexpr,
+    stride_vn: tl.constexpr,
+    stride_vh: tl.constexpr,
+    stride_sz: tl.constexpr,
+    stride_sm: tl.constexpr,
+    stride_ts: tl.constexpr,
+    stride_om: tl.constexpr,
+    stride_oh: tl.constexpr,
     alpha,
-    Z,
-    H,
-    MAX_SEQ_LEN,
-    DimQ,
-    DimV,
-    DeltaSize,
-    num_buckets,
-    max_pos_ind,
-    time_bucket_incr,
-    time_bucket_div,
-    time_delta,
+    DELTASIZE: tl.constexpr,
+    NUM_BUCKETS: tl.constexpr,
+    MAX_POS_IND: tl.constexpr,
+    TIME_BUCKET_INCR: tl.constexpr,
+    TIME_BUCKET_DIV: tl.constexpr,
+    TIME_DELTA: tl.constexpr,
     off_hz,
     pid,
+    DIMQ: tl.constexpr,
+    DIMV: tl.constexpr,
+    Z: tl.constexpr,
+    H: tl.constexpr,
+    MAX_SEQ_LEN: tl.constexpr,
     INVALID_MASK_TYPE: tl.constexpr,
     CAUSAL: tl.constexpr,
     BUCKET_FN: tl.constexpr,
@@ -426,7 +426,7 @@ def _ragged_hstu_attn_fwd_compute(  # noqa C901
     seq_len = (seq_end - seq_start).to(tl.int32)
     if IS_DELTA_Q:
         start_m_delta = pid * BLOCK_M
-        delta_start = tl.load(delta_x_offsets + off_z * DeltaSize)
+        delta_start = tl.load(delta_x_offsets + off_z * DELTASIZE)
         start_m = (start_m_delta + delta_start - seq_start).to(tl.int32)
     else:
         start_m_delta = 0
@@ -442,8 +442,8 @@ def _ragged_hstu_attn_fwd_compute(  # noqa C901
         offs_n = tl.arange(0, BLOCK_N)
         if IS_DELTA_Q:
             Q_block_ptr = tl.make_block_ptr(
-                base=Q + off_h * stride_qh + off_z * DeltaSize * stride_qm,
-                shape=(DeltaSize, BLOCK_D_Q),
+                base=Q + off_h * stride_qh + off_z * DELTASIZE * stride_qm,
+                shape=(DELTASIZE, BLOCK_D_Q),
                 strides=(stride_qm, 1),
                 offsets=(start_m_delta, 0),
                 block_shape=(BLOCK_M, BLOCK_D_Q),
@@ -550,12 +550,12 @@ def _ragged_hstu_attn_fwd_compute(  # noqa C901
                 PW=PW,
                 alpha=alpha,
                 MAX_SEQ_LEN=MAX_SEQ_LEN,
-                num_buckets=num_buckets,
-                max_pos_ind=max_pos_ind,
+                NUM_BUCKETS=NUM_BUCKETS,
+                MAX_POS_IND=MAX_POS_IND,
                 max_attn_len=max_attn_len,
-                time_bucket_incr=time_bucket_incr,
-                time_bucket_div=time_bucket_div,
-                time_delta=time_delta,
+                TIME_BUCKET_INCR=TIME_BUCKET_INCR,
+                TIME_BUCKET_DIV=TIME_BUCKET_DIV,
+                TIME_DELTA=TIME_DELTA,
                 # pyre-ignore[61]
                 bias_ptrs=bias_ptrs if ATTN_BIAS_TYPE == "separate" else None,
                 # pyre-ignore[61]
@@ -616,12 +616,12 @@ def _ragged_hstu_attn_fwd_compute(  # noqa C901
                         PW=PW,
                         alpha=alpha,
                         MAX_SEQ_LEN=MAX_SEQ_LEN,
-                        num_buckets=num_buckets,
-                        max_pos_ind=max_pos_ind,
+                        NUM_BUCKETS=NUM_BUCKETS,
+                        MAX_POS_IND=MAX_POS_IND,
                         max_attn_len=max_attn_len,
-                        time_bucket_incr=time_bucket_incr,
-                        time_bucket_div=time_bucket_div,
-                        time_delta=time_delta,
+                        TIME_BUCKET_INCR=TIME_BUCKET_INCR,
+                        TIME_BUCKET_DIV=TIME_BUCKET_DIV,
+                        TIME_DELTA=TIME_DELTA,
                         # pyre-ignore[61]
                         bias_ptrs=bias_ptrs if ATTN_BIAS_TYPE == "separate" else None,
                         # pyre-ignore[61]
@@ -649,12 +649,12 @@ def _ragged_hstu_attn_fwd_compute(  # noqa C901
             offs_m_delta = start_m_delta + tl.arange(0, BLOCK_M)
             offs_v_d = tl.arange(0, BLOCK_D_V)
             off_o = (
-                (off_z * DeltaSize + offs_m_delta[:, None]) * stride_om
+                (off_z * DELTASIZE + offs_m_delta[:, None]) * stride_om
                 + off_h * stride_oh
                 + offs_v_d[None, :]
             )
             out_ptrs = Out + off_o
-            tl.store(out_ptrs, acc, mask=(offs_m_delta < DeltaSize)[:, None])
+            tl.store(out_ptrs, acc, mask=(offs_m_delta < DELTASIZE)[:, None])
         else:
             # rematerialize offsets to save registers
             start_m = pid * BLOCK_M
@@ -678,7 +678,7 @@ def _ragged_hstu_attn_fwd_compute(  # noqa C901
         "DimV",
         "BUCKET_FN",
         "ATTN_BIAS_TYPE",
-        "DeltaSize",
+        "DELTASIZE",
         "IS_DELTA_Q",
     ],
 )
@@ -698,29 +698,29 @@ def _ragged_hstu_attn_fwd(  # noqa C901
     num_targets,
     Scale,
     Out,
-    stride_qm,
-    stride_qh,
-    stride_kn,
-    stride_kh,
-    stride_vn,
-    stride_vh,
-    stride_sz,
-    stride_sm,
-    stride_ts,
-    stride_om,
-    stride_oh,
+    stride_qm: tl.constexpr,
+    stride_qh: tl.constexpr,
+    stride_kn: tl.constexpr,
+    stride_kh: tl.constexpr,
+    stride_vn: tl.constexpr,
+    stride_vh: tl.constexpr,
+    stride_sz: tl.constexpr,
+    stride_sm: tl.constexpr,
+    stride_ts: tl.constexpr,
+    stride_om: tl.constexpr,
+    stride_oh: tl.constexpr,
     alpha,
-    Z,
-    H,
-    MAX_SEQ_LEN,
-    DimQ,
-    DimV,
-    DeltaSize,
-    num_buckets,
-    max_pos_ind,
-    time_bucket_incr,
-    time_bucket_div,
-    time_delta,
+    DELTASIZE: tl.constexpr,
+    NUM_BUCKETS: tl.constexpr,
+    MAX_POS_IND: tl.constexpr,
+    TIME_BUCKET_INCR: tl.constexpr,
+    TIME_BUCKET_DIV: tl.constexpr,
+    DIMQ: tl.constexpr,
+    DIMV: tl.constexpr,
+    MAX_SEQ_LEN: tl.constexpr,
+    Z: tl.constexpr,
+    H: tl.constexpr,
+    TIME_DELTA: tl.constexpr,
     INVALID_MASK_TYPE: tl.constexpr,
     CAUSAL: tl.constexpr,
     BUCKET_FN: tl.constexpr,
@@ -771,14 +771,14 @@ def _ragged_hstu_attn_fwd(  # noqa C901
         Z=Z,
         H=H,
         MAX_SEQ_LEN=MAX_SEQ_LEN,
-        DimQ=DimQ,
-        DimV=DimV,
-        DeltaSize=DeltaSize,
-        num_buckets=num_buckets,
-        max_pos_ind=max_pos_ind,
-        time_bucket_incr=time_bucket_incr,
-        time_bucket_div=time_bucket_div,
-        time_delta=time_delta,
+        DIMQ=DIMQ,
+        DIMV=DIMV,
+        DELTASIZE=DELTASIZE,
+        NUM_BUCKETS=NUM_BUCKETS,
+        MAX_POS_IND=MAX_POS_IND,
+        TIME_BUCKET_INCR=TIME_BUCKET_INCR,
+        TIME_BUCKET_DIV=TIME_BUCKET_DIV,
+        TIME_DELTA=TIME_DELTA,
         off_hz=off_hz,
         pid=pid,
         INVALID_MASK_TYPE=INVALID_MASK_TYPE,
@@ -811,7 +811,7 @@ def _ragged_hstu_attn_fwd(  # noqa C901
         "DimV",
         "BUCKET_FN",
         "ATTN_BIAS_TYPE",
-        "DeltaSize",
+        "DELTASIZE",
         "IS_DELTA_Q",
     ],
 )
@@ -831,29 +831,29 @@ def _ragged_hstu_attn_fwd_persistent(  # noqa C901
     num_targets,
     Scale,
     Out,
-    stride_qm,
-    stride_qh,
-    stride_kn,
-    stride_kh,
-    stride_vn,
-    stride_vh,
-    stride_sz,
-    stride_sm,
-    stride_ts,
-    stride_om,
-    stride_oh,
+    stride_qm: tl.constexpr,
+    stride_qh: tl.constexpr,
+    stride_kn: tl.constexpr,
+    stride_kh: tl.constexpr,
+    stride_vn: tl.constexpr,
+    stride_vh: tl.constexpr,
+    stride_sz: tl.constexpr,
+    stride_sm: tl.constexpr,
+    stride_ts: tl.constexpr,
+    stride_om: tl.constexpr,
+    stride_oh: tl.constexpr,
     alpha,
-    Z,
-    H,
-    MAX_SEQ_LEN,
-    DimQ,
-    DimV,
-    DeltaSize,
-    num_buckets,
-    max_pos_ind,
-    time_bucket_incr,
-    time_bucket_div,
-    time_delta,
+    DELTASIZE: tl.constexpr,
+    NUM_BUCKETS: tl.constexpr,
+    MAX_POS_IND: tl.constexpr,
+    TIME_BUCKET_INCR: tl.constexpr,
+    TIME_BUCKET_DIV: tl.constexpr,
+    DIMQ: tl.constexpr,
+    DIMV: tl.constexpr,
+    Z: tl.constexpr,
+    H: tl.constexpr,
+    MAX_SEQ_LEN: tl.constexpr,
+    TIME_DELTA: tl.constexpr,
     INVALID_MASK_TYPE: tl.constexpr,
     CAUSAL: tl.constexpr,
     BUCKET_FN: tl.constexpr,
@@ -916,14 +916,14 @@ def _ragged_hstu_attn_fwd_persistent(  # noqa C901
             Z=Z,
             H=H,
             MAX_SEQ_LEN=MAX_SEQ_LEN,
-            DimQ=DimQ,
-            DimV=DimV,
-            DeltaSize=DeltaSize,
-            num_buckets=num_buckets,
-            max_pos_ind=max_pos_ind,
-            time_bucket_incr=time_bucket_incr,
-            time_bucket_div=time_bucket_div,
-            time_delta=time_delta,
+            DIMQ=DIMQ,
+            DIMV=DIMV,
+            DELTASIZE=DELTASIZE,
+            NUM_BUCKETS=NUM_BUCKETS,
+            MAX_POS_IND=MAX_POS_IND,
+            TIME_BUCKET_INCR=TIME_BUCKET_INCR,
+            TIME_BUCKET_DIV=TIME_BUCKET_DIV,
+            TIME_DELTA=TIME_DELTA,
             off_hz=off_hz,
             pid=pid,
             INVALID_MASK_TYPE=INVALID_MASK_TYPE,
@@ -947,7 +947,7 @@ def _ragged_hstu_attn_fwd_persistent(  # noqa C901
         # tile_idx = tl.atomic_add(idx, 1, sem='relaxed')
         # tile_idx = tl.atomic_add(idx, 1)
 
-        tile_idx += num_progs
+        tile_idx += GRID_SIZE
 
 grid_size = 1216
 
@@ -1017,14 +1017,14 @@ def triton_ragged_attention(
     "Z": Z,
     "H": H,
     "MAX_SEQ_LEN": N,
-    "DimQ": DimQ,
-    "DimV": DimV,
-    "DeltaSize": 0,
-    "num_buckets": None,
-    "max_pos_ind": None,
-    "time_bucket_incr": None,
-    "time_bucket_div": None,
-    "time_delta": None,
+    "DIMQ": DimQ,
+    "DIMV": DimV,
+    "DELTASIZE": 0,
+    "NUM_BUCKETS": None,
+    "MAX_POS_IND": None,
+    "TIME_BUCKET_INCR": None,
+    "TIME_BUCKET_DIV": None,
+    "TIME_DELTA": None,
     "INVALID_MASK_TYPE": invalid_attn_mask_type,
     "CAUSAL": None,
     "BUCKET_FN": "none",
@@ -1129,14 +1129,14 @@ def triton_ragged_attention_relative_bias(
     "Z": Z,
     "H": H,
     "MAX_SEQ_LEN": N,
-    "DimQ": DimQ,
-    "DimV": DimV,
-    "DeltaSize": 0,
-    "num_buckets": num_buckets,
-    "max_pos_ind": max_pos_ind,
-    "time_bucket_incr": time_bucket_incr,
-    "time_bucket_div": time_bucket_div,
-    "time_delta": time_delta,
+    "DIMQ": DimQ,
+    "DIMV": DimV,
+    "DELTASIZE": 0,
+    "NUM_BUCKETS": num_buckets,
+    "MAX_POS_IND": max_pos_ind,
+    "TIME_BUCKET_INCR": time_bucket_incr,
+    "TIME_BUCKET_DIV": time_bucket_div,
+    "TIME_DELTA": time_delta,
     "INVALID_MASK_TYPE": invalid_attn_mask_type,
     "CAUSAL": causal,
     "BUCKET_FN": time_bucket_fn,
