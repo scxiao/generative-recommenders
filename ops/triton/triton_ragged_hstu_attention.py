@@ -47,7 +47,7 @@ def _get_fw_configs() -> List[triton.Config]:  # noqa: C901
         # ]
         for BLOCK_M in [32, 64, 128]:
             for BLOCK_N in [32, 64]:
-                for num_stages in [0, 1]:
+                for num_stages in [1, 2]:
                     for num_warps in [4, 8]:
                         for matrix_instr_nonkdim in [16, 32]:
                             for waves_per_eu in [0, 2]:
@@ -345,6 +345,20 @@ def _ragged_hstu_attn_fwd_one_block(  # noqa: C901
     v = tl.load(V_block_ptr, boundary_check=(0,), padding_option="zero")
     silu = silu.to(v.dtype, 'rtz')
     return tl.dot(silu, v, allow_tf32=ALLOW_TF32)
+
+
+@triton.jit
+def chiplet_swizzle(pid, grid_mn, NUM_XCDS: tl.constexpr):
+    # Compute current XCD and local pid within the XCD
+    xcd = pid % NUM_XCDS
+    rowId = xcd
+    local_pid = pid // NUM_XCDS
+    colId = local_pid // 4
+    id_in_col = local_pid % 4
+
+    # Calculate new pid based on the new grouping
+    new_pid = colId * 32 + rowId * 4 + id_in_col
+    return new_pid
 
 
 @triton.jit
@@ -724,6 +738,7 @@ def _ragged_hstu_attn_fwd(  # noqa C901
     BLOCK_N: tl.constexpr,
     max_attn_len: tl.constexpr,
     HAS_MAX_ATTN_LEN: tl.constexpr,
+    GRID_SIZE: tl.constexpr,
 ):
     off_hz = tl.program_id(1)
     pid = tl.program_id(0)
@@ -856,10 +871,14 @@ def _ragged_hstu_attn_fwd_persistent(  # noqa C901
     BLOCK_N: tl.constexpr,
     max_attn_len: tl.constexpr,
     HAS_MAX_ATTN_LEN: tl.constexpr,
+    GRID_SIZE: tl.constexpr,
 ):
     n_tile_num = tl.cdiv(MAX_SEQ_LEN, BLOCK_M)
-    prog_id = tl.program_id(0)
-    num_progs = tl.num_programs(0)
+    pid = tl.program_id(0)
+    # num_progs = tl.num_programs(0)
+    num_progs = GRID_SIZE
+    NUM_XCDS = 8
+    prog_id = chiplet_swizzle(pid, GRID_SIZE, NUM_XCDS)
 
     total_tiles = n_tile_num * Z * H
 
@@ -929,6 +948,8 @@ def _ragged_hstu_attn_fwd_persistent(  # noqa C901
         # tile_idx = tl.atomic_add(idx, 1)
 
         tile_idx += num_progs
+
+grid_size = 1216
 
 def triton_ragged_attention(
     N: int,
@@ -1018,11 +1039,12 @@ def triton_ragged_attention(
     "BLOCK_D_Q": DimQ,
     "BLOCK_D_V": DimV,
     "max_attn_len": max_attn_len,
-    "HAS_MAX_ATTN_LEN": has_max_attn_len
+    "HAS_MAX_ATTN_LEN": has_max_attn_len,
+    "GRID_SIZE": grid_size,
     }
     if torch.version.hip:
-        grid = (1216,)
-        idx = torch.zeros((1,), dtype=torch.int32, device="cuda") + 1216
+        grid = (grid_size,)
+        idx = torch.zeros((1,), dtype=torch.int32, device="cuda") + grid_size
         _ragged_hstu_attn_fwd_persistent[grid](idx=idx, **kwargs)
         # print(f"best_config = {_ragged_hstu_attn_fwd_persistent.best_config}")
     else:
@@ -1129,11 +1151,12 @@ def triton_ragged_attention_relative_bias(
     "BLOCK_D_Q": DimQ,
     "BLOCK_D_V": DimV,
     "max_attn_len": max_attn_len,
-    "HAS_MAX_ATTN_LEN": has_max_attn_len
+    "HAS_MAX_ATTN_LEN": has_max_attn_len,
+    "GRID_SIZE": grid_size,
     }
     if torch.version.hip:
-        grid = (1216,)
-        idx = torch.zeros((1,), dtype=torch.int32, device="cuda") + 1216
+        grid = (grid_size,)
+        idx = torch.zeros((1,), dtype=torch.int32, device="cuda") + grid_size
         _ragged_hstu_attn_fwd_persistent[grid](idx=idx, **kwargs)
         # print(f"bias_best_config = {_ragged_hstu_attn_fwd_persistent.best_config}")
     else:
