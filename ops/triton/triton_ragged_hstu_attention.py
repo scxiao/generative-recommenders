@@ -58,6 +58,7 @@ def _get_fw_configs() -> List[triton.Config]:  # noqa: C901
                                             "BLOCK_N": BLOCK_N,
                                             "matrix_instr_nonkdim": matrix_instr_nonkdim,
                                             "waves_per_eu": waves_per_eu,
+                                            "kpack": 2,
                                         },
                                         num_stages=num_stages,
                                         num_warps=num_warps,
