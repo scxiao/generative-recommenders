@@ -42,8 +42,8 @@ def _get_fw_configs() -> List[triton.Config]:  # noqa: C901
         # configs = [
         #     # triton.Config({'BLOCK_M': 32, 'BLOCK_N': 32, 'matrix_instr_nonkdim': 16, 'waves_per_eu': 2}, num_stages=2, num_warps=4),
         #     # triton.Config({'BLOCK_M': 32, 'BLOCK_N': 64, 'matrix_instr_nonkdim': 16, 'waves_per_eu': 2}, num_stages=2, num_warps=4),
-        #     # triton.Config({'BLOCK_M': 64, 'BLOCK_N': 32, 'matrix_instr_nonkdim': 16, 'waves_per_eu': 0}, num_stages=2, num_warps=4),
-        #     triton.Config({'BLOCK_M': 128, 'BLOCK_N': 32, 'matrix_instr_nonkdim': 16, 'waves_per_eu': 2}, num_stages=2, num_warps=4),
+        #     triton.Config({'BLOCK_M': 64, 'BLOCK_N': 64, 'matrix_instr_nonkdim': 16, 'waves_per_eu': 2, 'kpack': 2}, num_stages=1, num_warps=4),
+        #     # triton.Config({'BLOCK_M': 128, 'BLOCK_N': 32, 'matrix_instr_nonkdim': 16, 'waves_per_eu': 2}, num_stages=2, num_warps=4),
         # ]
         for BLOCK_M in [32, 64, 128]:
             for BLOCK_N in [32, 64]:
@@ -685,7 +685,6 @@ def _ragged_hstu_attn_fwd_compute(  # noqa C901
 )
 @triton.jit
 def _ragged_hstu_attn_fwd(  # noqa C901
-    idx,
     Q,
     K,
     V,
@@ -818,7 +817,6 @@ def _ragged_hstu_attn_fwd(  # noqa C901
 )
 @triton.jit
 def _ragged_hstu_attn_fwd_persistent(  # noqa C901
-    idx,
     Q,
     K,
     V,
@@ -945,9 +943,6 @@ def _ragged_hstu_attn_fwd_persistent(  # noqa C901
             BLOCK_M=BLOCK_M,
             BLOCK_N=BLOCK_N,
         )
-        # tile_idx = tl.atomic_add(idx, 1, sem='relaxed')
-        # tile_idx = tl.atomic_add(idx, 1)
-
         tile_idx += GRID_SIZE
 
 grid_size = 1216
@@ -1045,8 +1040,7 @@ def triton_ragged_attention(
     }
     if torch.version.hip:
         grid = (grid_size,)
-        idx = torch.zeros((1,), dtype=torch.int32, device="cuda") + grid_size
-        _ragged_hstu_attn_fwd_persistent[grid](idx=idx, **kwargs)
+        _ragged_hstu_attn_fwd_persistent[grid](**kwargs)
         # print(f"best_config = {_ragged_hstu_attn_fwd_persistent.best_config}")
     else:
         grid = lambda meta: (  # noqa E731
@@ -1054,8 +1048,7 @@ def triton_ragged_attention(
                 Z * H,
             )
         # unused for NV
-        idx = torch.zeros((1,), dtype=torch.int32, device="cuda")
-        _ragged_hstu_attn_fwd[grid](idx=idx, **kwargs)
+        _ragged_hstu_attn_fwd[grid](**kwargs)
     return out
 
 
@@ -1157,8 +1150,7 @@ def triton_ragged_attention_relative_bias(
     }
     if torch.version.hip:
         grid = (grid_size,)
-        idx = torch.zeros((1,), dtype=torch.int32, device="cuda") + grid_size
-        _ragged_hstu_attn_fwd_persistent[grid](idx=idx, **kwargs)
+        _ragged_hstu_attn_fwd_persistent[grid](**kwargs)
         # print(f"bias_best_config = {_ragged_hstu_attn_fwd_persistent.best_config}")
     else:
         grid = lambda meta: (  # noqa E731
@@ -1166,7 +1158,6 @@ def triton_ragged_attention_relative_bias(
                 Z * H,
             )
         # unused for NV
-        idx = torch.zeros((1,), dtype=torch.int32, device="cuda")
-        _ragged_hstu_attn_fwd[grid](idx=idx, **kwargs)
+        _ragged_hstu_attn_fwd[grid](**kwargs)
 
     return out
