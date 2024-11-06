@@ -71,14 +71,15 @@ def generate_hstu_timestamps(batch_size: int, seq_len: int) -> torch.Tensor:
     )
     timestamps, _ = torch.sort(timestamps, dim=1)
     return timestamps.long()
-
+ 
 
 def gen_inputs(dtype, attn_dim, batch_size, actual_seq_len, target_size, heads, hidden_dim, num_buckets, max_pos_ind):
     lengths = torch.zeros(batch_size, device=torch.device("cuda")) + actual_seq_len
     lengths = lengths + target_size
-    num_targets = torch.randint(
-        target_size, size=(batch_size,), device=torch.device("cuda")
-    )
+    # num_targets = torch.randint(
+    #     target_size, size=(batch_size,), device=torch.device("cuda")
+    # )    
+    num_targets = torch.zeros(size=(batch_size,), device=torch.device("cuda")) + target_size
     seq_offsets = torch.zeros(
         (batch_size + 1,), dtype=torch.int64, device=torch.device("cuda")
     )
@@ -128,14 +129,14 @@ def gen_inputs(dtype, attn_dim, batch_size, actual_seq_len, target_size, heads, 
 @click.option(
     "--batch-size",
     type=int,
-    default=32,
+    default=27,
 )
 @click.option("--heads", type=int, default=4)
 @click.option("--attn-dim", type=int, default=128)
 @click.option("--hidden-dim", type=int, default=128)
 @click.option("--max-seq-len", type=int, default=2550)
 @click.option("--actual-seq-len", type=int, default=1616)
-@click.option("--target-size", type=int, default=512)
+@click.option("--target-size", type=int, default=256)
 @click.option("--max-pos-ind", type=int, default=4086)
 @click.option("--no-relative-bias", is_flag=True, show_default=True, default=False)
 @click.option("--profiling-mode", is_flag=True, show_default=True, default=False)
@@ -167,6 +168,7 @@ def main(
     time_bucket_div = 1.0
 
     lengths, num_targets, seq_offsets, u, v, q, k, ts_weights, pos_weights = gen_inputs(dtype, attn_dim, batch_size, actual_seq_len, target_size, heads, hidden_dim, num_buckets, max_pos_ind)
+    print(f"batch_size = {batch_size}, lenths = {int(lengths.max().item())}")
     timestamps = generate_hstu_timestamps(batch_size, int(lengths.max().item()))
     relative_bias_type = "ALL"
 
