@@ -1038,7 +1038,16 @@ def triton_ragged_attention(
     "HAS_MAX_ATTN_LEN": has_max_attn_len,
     "GRID_SIZE": grid_size,
     }
-    if torch.version.hip:
+
+    # f = open("attn_no_bias.txt", "a")
+    # f.write(f"q_shape = {q.shape}, q_stride = [{q.stride(0)}, {q.stride(1)}, {q.stride(2)}]\n")
+    # f.write(f"k_shape = {k.shape}, k_stride = [{k.stride(0)}, {k.stride(1)}, {k.stride(2)}]\n")
+    # f.write(f"v_shape = {v.shape}, v_stride = [{v.stride(0)}, {v.stride(1)}, {v.stride(2)}]\n")
+    # f.write(f"param_dict = {kwargs}")
+    # f.close()
+
+    # if torch.version.hip:
+    if False:
         grid = (grid_size,)
         _ragged_hstu_attn_fwd_persistent[grid](**kwargs)
         # print(f"best_config = {_ragged_hstu_attn_fwd_persistent.best_config}")
@@ -1148,7 +1157,16 @@ def triton_ragged_attention_relative_bias(
     "HAS_MAX_ATTN_LEN": has_max_attn_len,
     "GRID_SIZE": grid_size,
     }
-    if torch.version.hip:
+
+    # f = open("attn_bias.txt", "a")
+    # f.write(f"q_shape = {q.shape}, q_stride = [{q.stride(0)}, {q.stride(1)}, {q.stride(2)}]\n")
+    # f.write(f"k_shape = {k.shape}, k_stride = [{k.stride(0)}, {k.stride(1)}, {k.stride(2)}]\n")
+    # f.write(f"v_shape = {v.shape}, v_stride = [{v.stride(0)}, {v.stride(1)}, {v.stride(2)}]\n")
+    # f.write(f"param_dict = {kwargs}")
+    # f.close()
+
+    # if torch.version.hip:
+    if False:
         grid = (grid_size,)
         _ragged_hstu_attn_fwd_persistent[grid](**kwargs)
         # print(f"bias_best_config = {_ragged_hstu_attn_fwd_persistent.best_config}")
