@@ -217,11 +217,22 @@ def main(
         ms, min_ms, max_ms = triton.testing.do_bench(
             fn, warmup=warmup, rep=rep, quantiles=quantiles
         )
+
     print(
         f"P50 latency is {ms:.5f} ms\n"
         f"P20 latency is {min_ms:.5f} ms\n"
         f"P80 latency is {max_ms:.5f} ms"
     )
+
+    # total_flops = 2.0 * batch_size * heads * actual_seq_len * actual_seq_len * (attn_dim + hidden_dim)
+    # total_flops *= 0.5
+    # flops_fn = lambda t_ms :  total_flops / t_ms * 1e-9
+
+    # print(
+    #     f"P50 latency is {flops_fn(ms):.3f} TFLOPS\n"
+    #     f"P20 latency is {flops_fn(min_ms):.3f} TFLOPS\n"
+    #     f"P80 latency is {flops_fn(max_ms):.3f} TFLOPS"
+    # )
 
 
 if __name__ == "__main__":
