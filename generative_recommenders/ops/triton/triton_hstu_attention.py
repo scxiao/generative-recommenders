@@ -20,6 +20,7 @@ import torch
 
 # @manual=//triton:triton
 import triton
+import os
 
 # @manual=//triton:triton
 import triton.language as tl
@@ -39,6 +40,35 @@ except ImportError:
     from generative_recommenders.ops.triton.triton_attention_utils import acc_dq
 
 
+def is_interpreter():
+    return os.environ.get('TRITON_INTERPRET', '0') == '1'
+
+
+def get_current_target():
+    if is_interpreter():
+        return None
+    return triton.runtime.driver.active.get_current_target()
+
+
+def is_hip():
+    target = get_current_target()
+    return False if target is None else target.backend == "hip"
+
+
+def is_hip_mi300():
+    target = get_current_target()
+    if target is None or target.backend != 'hip':
+        return False
+    return target.arch in ('gfx940', 'gfx941', 'gfx942')
+
+
+def is_hip_mi350():
+    target = get_current_target()
+    if target is None or target.backend != 'hip':
+        return False
+    return target.arch in ('gfx950')
+
+
 def _get_fw_configs() -> List[triton.Config]:  # noqa: C901
     configs = []
     if torch.version.hip:
@@ -54,7 +84,7 @@ def _get_fw_configs() -> List[triton.Config]:  # noqa: C901
                                         "BLOCK_N": BLOCK_N,
                                         "matrix_instr_nonkdim": matrix_instr_nonkdim,
                                         "waves_per_eu": 0,
-                                        "kpack": 2,
+                                        "kpack": 2 if is_hip_mi300() else 1,
                                     },
                                     num_stages=num_stages,
                                     num_warps=num_warps,
@@ -828,8 +858,8 @@ def _hstu_attn_bwd_one_block(  # noqa C901
     start_m,
     offs_n,
     offs_m,
-    q_ptrs_trans,
-    dq_ptrs_trans,
+    q_ptrs,
+    dq_ptrs,
     do_ptrs,
     device_desc_q,
     device_desc_do,
@@ -884,11 +914,12 @@ def _hstu_attn_bwd_one_block(  # noqa C901
         )
         q_trans = tl.trans(q)
     else:
-        q_trans = tl.load(
-            q_ptrs_trans + start_m * stride_qm,
-            mask=mask_m[None, :],
+        q = tl.load(
+            q_ptrs + start_m * stride_qm,
+            mask=mask_m[:, None],
             other=0.0,
         )
+        q_trans = tl.trans(q)
     qk_trans = tl.dot(k, q_trans, allow_tf32=ALLOW_TF32) * alpha
     sig_trans = fast_dividef(1.0, 1.0 + tl.exp(-qk_trans))
     silu_trans = qk_trans * sig_trans * (1.0 / MAX_SEQ_LEN)
@@ -924,9 +955,9 @@ def _hstu_attn_bwd_one_block(  # noqa C901
     dqk_trans = dqk_trans.to(k.dtype)
 
     # Note: the factor `alpha` is delayed until the end of the function to reduce the cost
-    dk += tl.dot(dqk_trans, tl.trans(q_trans), allow_tf32=ALLOW_TF32)
+    dk += tl.dot(dqk_trans, q, allow_tf32=ALLOW_TF32)
     acc_dq(
-        dq_ptrs_trans=dq_ptrs_trans,
+        dq_ptrs=dq_ptrs,
         start_m=start_m,
         stride_dqm=stride_dqm,
         k=k,
@@ -1015,11 +1046,11 @@ def _hstu_attn_bwd_one_col_block(  # noqa C901
     offs_v_d = tl.arange(0, BLOCK_D_V)
     offs_n = start_n + tl.arange(0, BLOCK_N)
 
-    dq_ptrs_trans = DQ + (offs_m[None, :] * stride_dqm + offs_qk_d[:, None])
+    dq_ptrs = DQ + (offs_m[:, None] * stride_dqm + offs_qk_d[None, :])
     dv = tl.zeros([BLOCK_N, BLOCK_D_V], dtype=tl.float32)
     dk = tl.zeros([BLOCK_N, BLOCK_D_Q], dtype=tl.float32)
     if ENABLE_TMA:
-        q_ptrs_trans = None
+        q_ptrs = None
         do_ptrs = None
         k = device_desc_k.load(
             [start_n, (off_h * stride_kh).to(tl.int32)],
@@ -1029,7 +1060,7 @@ def _hstu_attn_bwd_one_col_block(  # noqa C901
         )
     else:
         mask_n = offs_n < seq_len
-        q_ptrs_trans = Q + (offs_m[None, :] * stride_qm + offs_qk_d[:, None])
+        q_ptrs = Q + (offs_m[:, None] * stride_qm + offs_qk_d[None,:])
         do_ptrs = DOut + (offs_m[:, None] * stride_dom + offs_v_d[None, :])
         k_ptrs = K + (offs_n[:, None] * stride_kn + offs_qk_d[None, :])
         v_ptrs = V + (offs_n[:, None] * stride_vn + offs_v_d[None, :])
@@ -1061,8 +1092,8 @@ def _hstu_attn_bwd_one_col_block(  # noqa C901
                 start_m=start_m,
                 offs_n=offs_n,
                 offs_m=offs_m,
-                q_ptrs_trans=q_ptrs_trans,
-                dq_ptrs_trans=dq_ptrs_trans,
+                q_ptrs=q_ptrs,
+                dq_ptrs=dq_ptrs,
                 do_ptrs=do_ptrs,
                 device_desc_q=device_desc_q,
                 device_desc_do=device_desc_do,
@@ -1100,8 +1131,8 @@ def _hstu_attn_bwd_one_col_block(  # noqa C901
             start_m=start_m,
             offs_n=offs_n,
             offs_m=offs_m,
-            q_ptrs_trans=q_ptrs_trans,
-            dq_ptrs_trans=dq_ptrs_trans,
+            q_ptrs=q_ptrs,
+            dq_ptrs=dq_ptrs,
             do_ptrs=do_ptrs,
             device_desc_q=device_desc_q,
             device_desc_do=device_desc_do,
@@ -1165,8 +1196,8 @@ def _get_bw_configs() -> List[triton.Config]:
                 for num_stages in [1, 2]:
                     for num_warps in [4, 8]:
                         for matrix_instr_nonkdim in [16, 32]:
-                            for waves_per_eu in [0, 2, 4]:
-                                for sp in [True, False]:
+                            for waves_per_eu in [0, 1, 2]:
+                                for sp in [False]:
                                     configs.append(
                                         triton.Config(
                                             {
@@ -1826,6 +1857,7 @@ class _AttentionFunction(torch.autograd.Function):
         sort_by_length: bool,
         enable_tma: bool,
     ) -> torch.Tensor:
+        enable_tma = False if is_hip() else True
         sort_by_length_indices = None
         if sort_by_length:
             seq_lengths = seq_offsets[1:] - seq_offsets[:-1]

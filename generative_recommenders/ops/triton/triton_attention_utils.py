@@ -24,7 +24,7 @@ import triton.language as tl
 
 @triton.jit
 def acc_dq(
-    dq_ptrs_trans,
+    dq_ptrs,
     start_m,
     stride_dqm,
     k,
@@ -44,18 +44,18 @@ def acc_dq(
         tl.debug_barrier()  # add a barrier to force sync
         while tl.atomic_cas(lock, 0, 1) == 1:
             pass
-    dq_trans = tl.load(
-        dq_ptrs_trans + start_m * stride_dqm,
-        mask=mask_m[None, :],
+    dq = tl.load(
+        dq_ptrs + start_m * stride_dqm,
+        mask=mask_m[:, None],
         other=0.0,
         eviction_policy="evict_last",
     )
-    dq_trans += tl.dot(tl.trans(k), dqk_trans, allow_tf32=ALLOW_TF32) * alpha
-    dq_trans = dq_trans.to(k.dtype)
+    dq += tl.dot(tl.trans(dqk_trans), k, allow_tf32=ALLOW_TF32) * alpha
+    dq = dq.to(k.dtype)
     tl.store(
-        dq_ptrs_trans + start_m * stride_dqm,
-        dq_trans,
-        mask=mask_m[None, :],
+        dq_ptrs + start_m * stride_dqm,
+        dq,
+        mask=mask_m[:, None],
         eviction_policy="evict_last",
     )
     if ATOMIC_ADD:
