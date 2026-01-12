@@ -1,0 +1,2749 @@
+	.amdgcn_target "amdgcn-amd-amdhsa--gfx950"
+	.amdhsa_code_object_version 5
+	.text
+	.globl	_ragged_hstu_attn_bwd           ; -- Begin function _ragged_hstu_attn_bwd
+	.p2align	8
+	.type	_ragged_hstu_attn_bwd,@function
+_ragged_hstu_attn_bwd:                  ; @_ragged_hstu_attn_bwd
+.Lfunc_begin0:
+	.cfi_sections .debug_frame
+	.cfi_startproc
+; %bb.42:
+	.file	1 "/workspace/projects/triton-mi300/hstu_attn" "triton_ragged_hstu_attention.py"
+	.loc	1 1587 0 prologue_end           ; triton_ragged_hstu_attention.py:1587:0
+	s_load_dwordx2 s[2:3], s[0:1], 0x0
+	s_load_dwordx8 s[4:11], s[0:1], 0x8
+	s_load_dwordx4 s[12:15], s[0:1], 0x28
+	s_waitcnt lgkmcnt(0)
+	s_branch .LBB0_0
+	.loc	1 0 0 is_stmt 0                 ; :0:0
+.Ltmp0:
+	.p2align	8
+; %bb.43:
+.LBB0_0:
+	s_load_dword s20, s[0:1], 0x98
+	s_mov_b64 s[76:77], s[14:15]
+.Ltmp1:
+	.loc	1 1675 22 is_stmt 1             ; triton_ragged_hstu_attention.py:1675:22
+	s_abs_i32 s15, s16
+	s_mov_b32 s94, 0
+	s_waitcnt lgkmcnt(0)
+	s_abs_i32 s14, s20
+	v_cvt_f32_u32_e32 v1, s14
+	s_sub_i32 s18, 0, s14
+	s_xor_b32 s17, s16, s20
+	s_ashr_i32 s17, s17, 31
+	v_rcp_iflag_f32_e32 v1, v1
+	s_nop 0
+	v_mul_f32_e32 v1, 0x4f7ffffe, v1
+	v_cvt_u32_f32_e32 v1, v1
+	s_nop 0
+	v_readfirstlane_b32 s19, v1
+	s_mul_i32 s18, s18, s19
+	s_mul_hi_u32 s18, s19, s18
+	s_add_i32 s19, s19, s18
+	s_mul_hi_u32 s18, s15, s19
+	s_mul_i32 s19, s18, s14
+	s_sub_i32 s15, s15, s19
+	s_add_i32 s19, s18, 1
+	s_sub_i32 s21, s15, s14
+	s_cmp_ge_u32 s15, s14
+	s_cselect_b32 s18, s19, s18
+	s_cselect_b32 s15, s21, s15
+	s_add_i32 s19, s18, 1
+	s_cmp_ge_u32 s15, s14
+	s_cselect_b32 s14, s19, s18
+	s_xor_b32 s14, s14, s17
+	s_sub_i32 s14, s14, s17
+	.loc	1 1680 24                       ; triton_ragged_hstu_attention.py:1680:24
+	s_ashr_i32 s15, s14, 31
+	s_lshl_b64 s[18:19], s[14:15], 3
+	s_add_u32 s22, s8, s18
+	s_addc_u32 s23, s9, s19
+	.loc	1 1681 44                       ; triton_ragged_hstu_attention.py:1681:44
+	s_add_i32 s24, s14, 1
+	.loc	1 1681 22 is_stmt 0             ; triton_ragged_hstu_attention.py:1681:22
+	s_ashr_i32 s25, s24, 31
+	s_lshl_b64 s[24:25], s[24:25], 3
+	s_add_u32 s24, s8, s24
+	s_addc_u32 s25, s9, s25
+	.loc	1 1680 24 is_stmt 1             ; triton_ragged_hstu_attention.py:1680:24
+	s_load_dwordx2 s[8:9], s[22:23], 0x0
+	.loc	1 1682 25                       ; triton_ragged_hstu_attention.py:1682:25
+	s_load_dword s15, s[24:25], 0x0
+.Ltmp2:
+	.loc	1 1068 10                       ; triton_ragged_hstu_attention.py:1068:10 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_readfirstlane_b32 s17, v0
+.Ltmp3:
+	.loc	1 1682 25                       ; triton_ragged_hstu_attention.py:1682:25
+	s_waitcnt lgkmcnt(0)
+	s_sub_i32 s33, s15, s8
+	.loc	1 1770 41                       ; triton_ragged_hstu_attention.py:1770:41
+	s_cmp_lt_i32 s33, 1
+	s_cbranch_scc1 .LBB0_41
+; %bb.1:                                ; %.lr.ph65
+	.loc	1 0 41 is_stmt 0                ; triton_ragged_hstu_attention.py:0:41
+	s_load_dword s21, s[0:1], 0x9c
+	s_load_dword s92, s[0:1], 0x88
+	s_load_dwordx2 s[24:25], s[0:1], 0x80
+	s_load_dwordx4 s[28:31], s[0:1], 0x70
+	s_load_dwordx4 s[84:87], s[0:1], 0x38
+	s_load_dwordx8 s[68:75], s[0:1], 0x50
+	.loc	1 1678 21 is_stmt 1             ; triton_ragged_hstu_attention.py:1678:21
+	s_mul_i32 s0, s14, s20
+.Ltmp4:
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_and_b32 s15, s17, 0xc0
+.Ltmp5:
+	.loc	1 1678 21                       ; triton_ragged_hstu_attention.py:1678:21
+	s_sub_i32 s16, s16, s0
+	.loc	1 1684 28                       ; triton_ragged_hstu_attention.py:1684:28
+	s_add_u32 s0, s10, s18
+	s_addc_u32 s1, s11, s19
+	.loc	1 1684 52 is_stmt 0             ; triton_ragged_hstu_attention.py:1684:52
+	s_load_dword s10, s[0:1], 0x0
+	.loc	1 1688 24 is_stmt 1             ; triton_ragged_hstu_attention.py:1688:24
+	s_waitcnt lgkmcnt(0)
+	s_ashr_i32 s0, s68, 31
+	s_mul_hi_u32 s1, s8, s68
+	s_mul_i32 s0, s8, s0
+	s_add_i32 s0, s1, s0
+	s_mul_i32 s1, s9, s68
+	s_add_i32 s1, s0, s1
+	s_mul_i32 s0, s8, s68
+	.loc	1 1688 0 is_stmt 0              ; triton_ragged_hstu_attention.py:1688
+	s_lshl_b64 s[0:1], s[0:1], 1
+	.loc	1 1688 44                       ; triton_ragged_hstu_attention.py:1688:44
+	s_mul_hi_i32 s19, s16, s69
+	s_mul_i32 s18, s16, s69
+	.loc	1 1688 0                        ; triton_ragged_hstu_attention.py:1688
+	s_add_u32 s2, s2, s0
+	s_addc_u32 s3, s3, s1
+	s_lshl_b64 s[0:1], s[18:19], 1
+	s_add_u32 s0, s2, s0
+	s_addc_u32 s1, s3, s1
+	.loc	1 1689 24 is_stmt 1             ; triton_ragged_hstu_attention.py:1689:24
+	s_ashr_i32 s2, s70, 31
+	s_mul_hi_u32 s3, s8, s70
+	s_mul_i32 s2, s8, s2
+	s_add_i32 s2, s3, s2
+	s_mul_i32 s3, s9, s70
+	s_add_i32 s3, s2, s3
+	s_mul_i32 s2, s8, s70
+	.loc	1 1689 0 is_stmt 0              ; triton_ragged_hstu_attention.py:1689
+	s_lshl_b64 s[2:3], s[2:3], 1
+	.loc	1 1689 44                       ; triton_ragged_hstu_attention.py:1689:44
+	s_mul_hi_i32 s19, s16, s71
+	s_mul_i32 s18, s16, s71
+	.loc	1 1689 0                        ; triton_ragged_hstu_attention.py:1689
+	s_add_u32 s4, s4, s2
+	s_addc_u32 s5, s5, s3
+	s_lshl_b64 s[2:3], s[18:19], 1
+	s_add_u32 s2, s4, s2
+	s_addc_u32 s3, s5, s3
+                                        ; implicit-def: $vgpr255 : SGPR spill to VGPR lane
+	.loc	1 1690 44 is_stmt 1             ; triton_ragged_hstu_attention.py:1690:44
+	s_mul_hi_i32 s5, s16, s73
+	v_writelane_b32 v255, s2, 0
+	s_mul_i32 s4, s16, s73
+.Ltmp6:
+	.loc	1 981 47                        ; triton_ragged_hstu_attention.py:981:47 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cvt_f32_i32_e32 v5, s21
+	v_writelane_b32 v255, s3, 1
+.Ltmp7:
+	.loc	1 1690 24                       ; triton_ragged_hstu_attention.py:1690:24
+	s_ashr_i32 s2, s72, 31
+	s_mul_hi_u32 s3, s8, s72
+	s_mul_i32 s2, s8, s2
+	s_add_i32 s2, s3, s2
+	s_mul_i32 s3, s9, s72
+	s_add_i32 s3, s2, s3
+	s_mul_i32 s2, s8, s72
+	.loc	1 1690 0 is_stmt 0              ; triton_ragged_hstu_attention.py:1690
+	s_lshl_b64 s[2:3], s[2:3], 1
+	s_add_u32 s6, s6, s2
+	s_addc_u32 s7, s7, s3
+	s_lshl_b64 s[2:3], s[4:5], 1
+	s_add_u32 s2, s6, s2
+	s_addc_u32 s3, s7, s3
+	v_writelane_b32 v255, s2, 2
+.Ltmp8:
+	.loc	1 1161 26 is_stmt 1             ; triton_ragged_hstu_attention.py:1161:26 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_and_b32_e32 v1, 63, v0
+	v_mov_b32_e32 v16, 0xf0
+	v_writelane_b32 v255, s3, 3
+.Ltmp9:
+	.loc	1 981 47                        ; triton_ragged_hstu_attention.py:981:47 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_div_scale_f32 v6, s[2:3], v5, v5, 1.0
+	v_rcp_f32_e32 v7, v6
+.Ltmp10:
+	.loc	1 1161 26                       ; triton_ragged_hstu_attention.py:1161:26 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_or_b32_e32 v2, s15, v1
+.Ltmp11:
+	.loc	1 1694 26                       ; triton_ragged_hstu_attention.py:1694:26
+	s_mul_i32 s7, s8, s24
+	.loc	1 1694 47 is_stmt 0             ; triton_ragged_hstu_attention.py:1694:47
+	s_mul_i32 s9, s16, s25
+.Ltmp12:
+	.loc	1 1161 26 is_stmt 1             ; triton_ragged_hstu_attention.py:1161:26 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_bitop3_b32 v1, s15, v16, v1 bitop3:0xc8
+	v_and_b32_e32 v3, 32, v0
+	.loc	1 1167 58                       ; triton_ragged_hstu_attention.py:1167:58 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_and_b32_e32 v8, 15, v0
+.Ltmp13:
+	.loc	1 1694 0                        ; triton_ragged_hstu_attention.py:1694
+	s_add_i32 s7, s7, s9
+	s_movk_i32 s9, 0xf0
+	v_lshlrev_b32_e32 v16, 4, v2
+	v_lshrrev_b32_e32 v1, 1, v1
+.Ltmp14:
+	.loc	1 1161 26                       ; triton_ragged_hstu_attention.py:1161:26 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_and_b32_e32 v186, 31, v0
+	.loc	1 1167 58                       ; triton_ragged_hstu_attention.py:1167:58 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_lshlrev_b32_e32 v176, 3, v8
+.Ltmp15:
+	.loc	1 981 47                        ; triton_ragged_hstu_attention.py:981:47 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_fma_f32 v9, -v6, v7, 1.0
+	v_xor_b32_e32 v47, v1, v16
+	v_bitop3_b32 v16, v16, v2, s9 bitop3:0x78
+	s_lshl_b32 s9, s15, 7
+	v_lshlrev_b32_e32 v8, 4, v8
+	v_lshrrev_b32_e32 v23, 1, v3
+	v_fmac_f32_e32 v7, v9, v7
+	v_div_scale_f32 v9, vcc, 1.0, v5, 1.0
+	v_lshlrev_b32_e32 v22, 8, v186
+	v_bitop3_b32 v8, s9, v8, v23 bitop3:0xf6
+	s_movk_i32 s9, 0x80
+	v_mul_f32_e32 v10, v9, v7
+.Ltmp16:
+	.loc	1 1693 26                       ; triton_ragged_hstu_attention.py:1693:26
+	s_mul_i32 s3, s8, s30
+	.loc	1 1693 47 is_stmt 0             ; triton_ragged_hstu_attention.py:1693:47
+	s_mul_i32 s5, s16, s31
+	v_bitop3_b32 v27, v8, s9, v22 bitop3:0x36
+	s_movk_i32 s9, 0xa0
+	s_movk_i32 s22, 0xc0
+.Ltmp17:
+	.loc	1 1161 26 is_stmt 1             ; triton_ragged_hstu_attention.py:1161:26 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_lshrrev_b32_e32 v187, 4, v2
+.Ltmp18:
+	.loc	1 981 47                        ; triton_ragged_hstu_attention.py:981:47 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_fma_f32 v11, -v6, v10, v9
+.Ltmp19:
+	.loc	1 1693 0                        ; triton_ragged_hstu_attention.py:1693
+	s_add_i32 s3, s3, s5
+	s_movk_i32 s5, 0x60
+	v_bitop3_b32 v28, v8, s9, v22 bitop3:0x36
+	s_movk_i32 s9, 0xe0
+	v_lshlrev_b32_e32 v30, 3, v2
+	v_lshrrev_b32_e32 v2, 1, v2
+.Ltmp20:
+	.loc	1 981 47                        ; triton_ragged_hstu_attention.py:981:47 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_fmac_f32_e32 v10, v11, v7
+	v_lshlrev_b32_e32 v17, 3, v0
+	v_lshlrev_b32_e32 v19, 1, v0
+	v_or_b32_e32 v23, v8, v22
+	v_bitop3_b32 v24, v8, 32, v22 bitop3:0x36
+	v_bitop3_b32 v25, v8, 64, v22 bitop3:0x36
+	v_bitop3_b32 v26, v8, s5, v22 bitop3:0x36
+	v_bitop3_b32 v29, v8, s22, v22 bitop3:0x36
+	v_bitop3_b32 v8, v8, s9, v22 bitop3:0x36
+	v_and_b32_e32 v2, 0x70, v2
+	v_and_b32_e32 v33, 16, v0
+	s_movk_i32 s9, 0x770
+.Ltmp21:
+	.loc	1 1161 26                       ; triton_ragged_hstu_attention.py:1161:26 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_bfe_i32 v4, v0, 5, 1
+.Ltmp22:
+	.loc	1 981 47                        ; triton_ragged_hstu_attention.py:981:47 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_fma_f32 v6, -v6, v10, v9
+	v_and_b32_e32 v1, 12, v0
+	v_and_b32_e32 v18, 24, v17
+	v_and_b32_e32 v19, 56, v19
+	s_movk_i32 s11, 0x420
+	v_and_b32_e32 v31, 1, v0
+	v_lshlrev_b32_e32 v34, 8, v33
+	v_bitop3_b32 v2, v30, v2, s9 bitop3:0x6c
+	v_lshlrev_b32_e32 v30, 7, v0
+	v_div_fmas_f32 v6, v6, v7, v10
+.Ltmp23:
+	.loc	1 1167 58                       ; triton_ragged_hstu_attention.py:1167:58 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_lshrrev_b32_e32 v7, 2, v3
+	v_and_b32_e32 v20, 0x420, v4
+	v_lshl_or_b32 v18, v1, 6, v18
+	v_or_b32_e32 v21, s15, v19
+	v_add3_u32 v2, 0, v34, v2
+	v_and_b32_e32 v30, 0x700, v30
+	v_lshlrev_b32_e32 v34, 12, v31
+	v_lshlrev_b32_e32 v35, 6, v3
+	v_bitop3_b32 v4, v4, v19, s11 bitop3:0x6c
+	s_movk_i32 s2, 0x70
+	s_movk_i32 s6, 0x50
+	v_bitop3_b32 v21, v20, v21, v18 bitop3:0x36
+	v_and_b32_e32 v17, 0xf0, v17
+	v_or3_b32 v30, v30, v34, v35
+	v_xor_b32_e32 v4, v4, v18
+	v_lshlrev_b32_e32 v18, 1, v186
+	v_xor_b32_e32 v19, v176, v7
+	v_or_b32_e32 v34, v30, v17
+	v_bitop3_b32 v35, v30, 16, v17 bitop3:0x36
+	v_bitop3_b32 v36, v30, 32, v17 bitop3:0x36
+	v_bitop3_b32 v37, v30, 48, v17 bitop3:0x36
+	v_bitop3_b32 v38, v30, 64, v17 bitop3:0x36
+	v_bitop3_b32 v39, v30, s6, v17 bitop3:0x36
+	v_bitop3_b32 v40, v30, s5, v17 bitop3:0x36
+	v_bitop3_b32 v17, v30, s2, v17 bitop3:0x36
+	v_bitop3_b32 v18, s15, v20, v18 bitop3:0x36
+	v_bitop3_b32 v20, v176, v22, v7 bitop3:0xde
+	v_bitop3_b32 v30, v19, 16, v22 bitop3:0x36
+	v_bitop3_b32 v41, v19, 32, v22 bitop3:0x36
+	v_bitop3_b32 v42, v19, 48, v22 bitop3:0x36
+	v_bitop3_b32 v43, v19, 64, v22 bitop3:0x36
+	v_bitop3_b32 v44, v19, s6, v22 bitop3:0x36
+	v_bitop3_b32 v45, v19, s5, v22 bitop3:0x36
+	v_bitop3_b32 v19, v19, s2, v22 bitop3:0x36
+	v_and_b32_e32 v22, 2, v0
+	s_bfe_i32 s5, s17, 0x10007
+	v_lshlrev_b32_e32 v46, 2, v22
+	s_bfe_i32 s2, s17, 0x10006
+	s_and_b32 s5, s5, 0x220
+	s_and_b32 s2, s2, 0x108
+	v_lshl_or_b32 v1, v1, 3, v46
+	v_mov_b32_e32 v46, s5
+	.loc	1 1161 26                       ; triton_ragged_hstu_attention.py:1161:26 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_lshrrev_b32_e32 v185, 3, v3
+	v_lshlrev_b32_e32 v3, 7, v3
+	v_bitop3_b32 v1, s2, v1, v46 bitop3:0x36
+	v_or3_b32 v1, v1, v3, v33
+	v_lshlrev_b32_e32 v3, 6, v0
+	v_lshlrev_b32_e32 v33, 2, v0
+	v_bfe_i32 v46, v0, 2, 1
+	.loc	1 1162 29                       ; triton_ragged_hstu_attention.py:1162:29 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_lshr_b32 s4, s15, 1
+	v_lshlrev_b32_e32 v32, 11, v31
+	v_and_b32_e32 v3, 0x600, v3
+	v_and_b32_e32 v33, 0xe0, v33
+	v_lshlrev_b32_e32 v31, 4, v31
+	v_lshlrev_b32_e32 v22, 11, v22
+	v_and_b32_e32 v46, 0x108, v46
+	v_or_b32_e32 v188, s4, v186
+	v_or3_b32 v22, v31, v22, v46
+	v_bitop3_b32 v3, s4, v3, v33 bitop3:0x1e
+	v_or_b32_e32 v31, v3, v22
+	v_bitop3_b32 v22, v3, 8, v22 bitop3:0x36
+	v_mul_lo_u32 v3, v188, s24
+	.loc	1 1167 58                       ; triton_ragged_hstu_attention.py:1167:58 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_or_b32_e32 v15, 16, v7
+	v_add3_u32 v33, v7, s7, v3
+	v_or_b32_e32 v14, 32, v7
+	v_accvgpr_write_b32 a133, v33
+	v_add3_u32 v33, v15, s7, v3
+	v_or_b32_e32 v13, 48, v7
+	v_accvgpr_write_b32 a134, v33
+	v_add3_u32 v33, v14, s7, v3
+	v_or_b32_e32 v12, 64, v7
+	v_accvgpr_write_b32 a135, v33
+	v_add3_u32 v33, v13, s7, v3
+	v_or_b32_e32 v11, 0x50, v7
+	v_accvgpr_write_b32 a136, v33
+	v_add3_u32 v33, v12, s7, v3
+	v_or_b32_e32 v9, 0x70, v7
+	v_or_b32_e32 v10, 0x60, v7
+	v_accvgpr_write_b32 a137, v33
+	v_add3_u32 v33, v11, s7, v3
+	v_accvgpr_write_b32 a138, v33
+	v_add3_u32 v33, v10, s7, v3
+	v_add3_u32 v3, v9, s7, v3
+	s_mov_b32 s2, s24
+	v_accvgpr_write_b32 a140, v3
+	v_mul_lo_u32 v3, v188, s30
+	v_writelane_b32 v255, s2, 4
+.Ltmp24:
+	.loc	1 1770 41                       ; triton_ragged_hstu_attention.py:1770:41
+	s_mul_i32 s4, s29, s16
+	v_lshrrev_b32_e32 v0, 1, v0
+	v_add3_u32 v7, v7, s3, v3
+	v_accvgpr_write_b32 a141, v7
+	v_add3_u32 v7, v15, s3, v3
+	v_accvgpr_write_b32 a142, v7
+	v_add3_u32 v7, v14, s3, v3
+	v_add3_u32 v201, v13, s3, v3
+	v_add3_u32 v202, v12, s3, v3
+	v_add3_u32 v203, v11, s3, v3
+	v_add3_u32 v204, v10, s3, v3
+	v_add3_u32 v205, v9, s3, v3
+	v_add_u32_e32 v3, s8, v186
+	v_mul_lo_u32 v3, s28, v3
+	v_writelane_b32 v255, s3, 5
+	v_lshlrev_b32_e32 v3, 1, v3
+	s_lshl1_add_u32 s2, s4, s15
+	v_and_b32_e32 v0, 16, v0
+	v_add3_u32 v206, s2, v3, v0
+	s_movk_i32 s2, 0x440
+	v_accvgpr_write_b32 a143, v7
+	v_or_b32_e32 v7, v1, v32
+	v_bitop3_b32 v9, v1, s2, v32 bitop3:0x36
+.Ltmp25:
+	.loc	1 1167 48                       ; triton_ragged_hstu_attention.py:1167:48 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mad_u64_u32 v[0:1], s[2:3], v187, s68, v[176:177]
+	v_add_u32_e32 v207, v2, v32
+	.loc	1 1167 18 is_stmt 0             ; triton_ragged_hstu_attention.py:1167:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_ashrrev_i32_e32 v1, 31, v0
+	.loc	1 1167 48                       ; triton_ragged_hstu_attention.py:1167:48 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_lshl_add_u32 v2, s68, 4, v0
+	.loc	1 1167 18                       ; triton_ragged_hstu_attention.py:1167:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_lshl_add_u64 v[178:179], v[0:1], 1, s[0:1]
+	v_ashrrev_i32_e32 v3, 31, v2
+.Ltmp26:
+	.loc	1 1770 41 is_stmt 1             ; triton_ragged_hstu_attention.py:1770:41
+	v_add_u32_e32 v0, s8, v187
+.Ltmp27:
+	.loc	1 1167 18                       ; triton_ragged_hstu_attention.py:1167:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_lshl_add_u64 v[180:181], v[2:3], 1, s[0:1]
+	s_lshl_b32 s0, s72, 5
+.Ltmp28:
+	.loc	1 1770 41                       ; triton_ragged_hstu_attention.py:1770:41
+	v_add_u32_e32 v1, 16, v0
+	v_writelane_b32 v255, s0, 6
+	v_mul_lo_u32 v2, s28, v1
+	s_lshl_b32 s0, s28, 8
+	v_add_u32_e32 v2, s4, v2
+	v_writelane_b32 v255, s0, 7
+	v_add_lshl_u32 v208, v2, v176, 1
+	s_lshl_b32 s83, s28, 6
+	v_writelane_b32 v255, s28, 8
+	s_mul_i32 s0, s75, s16
+	v_mul_lo_u32 v1, s74, v1
+	v_mul_lo_u32 v2, s28, v0
+	v_mul_lo_u32 v0, s74, v0
+	v_add_u32_e32 v0, s0, v0
+	v_writelane_b32 v255, s29, 9
+	v_add_lshl_u32 v211, v0, v176, 1
+	v_xor_b32_e32 v0, 64, v21
+	v_writelane_b32 v255, s30, 10
+	v_add_u32_e32 v2, s4, v2
+	v_add_u32_e32 v1, s0, v1
+	v_add_u32_e32 v213, 0, v0
+	v_xor_b32_e32 v0, 8, v18
+.Ltmp29:
+	.loc	1 1209 28                       ; triton_ragged_hstu_attention.py:1209:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_sub_i32 s71, s33, s10
+.Ltmp30:
+	.loc	1 981 47                        ; triton_ragged_hstu_attention.py:981:47 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_div_fixup_f32 v182, v6, v5, 1.0
+.Ltmp31:
+	.loc	1 1770 41                       ; triton_ragged_hstu_attention.py:1770:41
+	v_writelane_b32 v255, s31, 11
+	v_add_lshl_u32 v209, v2, v176, 1
+	v_add_lshl_u32 v210, v1, v176, 1
+	s_lshl_b32 s0, s68, 7
+	v_add_u32_e32 v222, 0, v4
+	v_xor_b32_e32 v1, 16, v18
+	v_xor_b32_e32 v2, 24, v18
+	v_xor_b32_e32 v3, 64, v18
+	v_xor_b32_e32 v4, 0x48, v18
+	v_xor_b32_e32 v5, 0x50, v18
+	v_xor_b32_e32 v6, 0x58, v18
+	v_add_u32_e32 v224, 0, v0
+	v_xor_b32_e32 v0, 8, v47
+	v_accvgpr_write_b32 a139, v33
+	s_and_b32 s13, s13, 0xffff
+	s_mov_b32 s15, 0x27000
+	s_mov_b32 s14, 0x7ffffffe
+	s_and_b32 s77, s77, 0xffff
+	s_and_b32 s89, s87, 0xffff
+	s_mov_b32 s88, s86
+	s_and_b32 s85, s85, 0xffff
+.Ltmp32:
+	.loc	1 1328 14                       ; triton_ragged_hstu_attention.py:1328:14 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_mov_b32 s93, s92
+	s_mov_b32 s73, s71
+	v_mov_b32_e32 v183, v182
+	s_lshl_b32 s81, s70, 4
+	s_lshl_b32 s95, s72, 4
+.Ltmp33:
+	.loc	1 1770 41                       ; triton_ragged_hstu_attention.py:1770:41
+	s_lshl_b32 s99, s74, 8
+	s_lshl_b32 s82, s74, 6
+	v_writelane_b32 v255, s0, 12
+	s_lshl_b32 s80, s68, 5
+	v_add_u32_e32 v212, 0, v21
+	v_add_u32_e32 v214, 0, v34
+	v_add_u32_e32 v215, 0, v35
+	v_add_u32_e32 v216, 0, v36
+	v_add_u32_e32 v217, 0, v37
+	v_add_u32_e32 v218, 0, v38
+	v_add_u32_e32 v219, 0, v39
+	v_add_u32_e32 v220, 0, v40
+	v_add_u32_e32 v221, 0, v17
+	s_mov_b32 s96, 0x3fb8aa3b
+	v_add_u32_e32 v223, 0, v18
+	v_add_u32_e32 v225, 0, v1
+	v_add_u32_e32 v226, 0, v2
+	v_add_u32_e32 v227, 0, v3
+	v_add_u32_e32 v228, 0, v4
+	v_add_u32_e32 v229, 0, v5
+	v_add_u32_e32 v230, 0, v6
+	v_add_u32_e32 v231, 0, v20
+	v_add_u32_e32 v232, 0, v30
+	v_add_u32_e32 v233, 0, v41
+	v_add_u32_e32 v234, 0, v42
+	v_add_u32_e32 v235, 0, v43
+	v_add_u32_e32 v236, 0, v44
+	v_add_u32_e32 v237, 0, v45
+	v_add_u32_e32 v238, 0, v19
+	v_add_u32_e32 v239, 0, v7
+	v_add_u32_e32 v240, 0, v9
+	v_add_u32_e32 v241, 0, v31
+	v_add_u32_e32 v242, 0, v22
+	v_accvgpr_write_b32 a132, v47
+	v_add_u32_e32 v243, 0, v0
+	v_add_u32_e32 v244, 0, v16
+	v_add_u32_e32 v245, 0, v23
+	v_add_u32_e32 v246, 0, v24
+	v_add_u32_e32 v247, 0, v25
+	v_add_u32_e32 v248, 0, v26
+	v_add_u32_e32 v249, 0, v27
+	v_add_u32_e32 v250, 0, v28
+	v_add_u32_e32 v251, 0, v29
+	v_add_u32_e32 v252, 0, v8
+	s_mov_b32 s97, 0
+	s_mov_b32 s98, 0
+	v_bfrev_b32_e32 v253, 1
+	s_branch .LBB0_3
+.LBB0_2:                                ; %._crit_edge
+                                        ;   in Loop: Header=BB0_3 Depth=1
+.Ltmp34:
+	.loc	1 1326 20                       ; triton_ragged_hstu_attention.py:1326:20 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s0, v255, 4
+	v_readlane_b32 s1, v255, 5
+	s_mul_i32 s1, s98, s0
+	.loc	1 1328 14                       ; triton_ragged_hstu_attention.py:1328:14 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_pk_mul_f32 v[144:145], s[92:93], v[0:1]
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v0, v32, v33
+	v_accvgpr_read_b32 v32, a133
+	.loc	1 1328 14                       ; triton_ragged_hstu_attention.py:1328:14 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_pk_mul_f32 v[146:147], s[92:93], v[2:3]
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v1, v34, v35
+	v_cvt_pk_bf16_f32 v2, v36, v37
+	v_cvt_pk_bf16_f32 v3, v38, v39
+	.loc	1 1329 22 is_stmt 0             ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_lshl_u32 v32, v32, s1, 1
+	.loc	1 1171 22 is_stmt 1             ; triton_ragged_hstu_attention.py:1171:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cmp_gt_i32_e32 vcc, s33, v184
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v0, v2
+	v_permlane32_swap_b32_e32 v1, v3
+	.loc	1 1329 22 is_stmt 0             ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v32, v253, v32, vcc
+	s_mov_b32 s90, s14
+	s_mov_b32 s91, s15
+	buffer_store_dwordx4 v[0:3], v32, s[88:91], 0 offen
+	.loc	1 1328 14 is_stmt 1             ; triton_ragged_hstu_attention.py:1328:14 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_pk_mul_f32 v[148:149], s[92:93], v[4:5]
+	v_pk_mul_f32 v[150:151], s[92:93], v[6:7]
+	v_accvgpr_read_b32 v0, a134
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v4, v40, v41
+	v_cvt_pk_bf16_f32 v5, v42, v43
+	v_cvt_pk_bf16_f32 v6, v44, v45
+	v_cvt_pk_bf16_f32 v7, v46, v47
+	.loc	1 1329 22 is_stmt 0             ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_lshl_u32 v0, v0, s1, 1
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v4, v6
+	v_permlane32_swap_b32_e32 v5, v7
+	.loc	1 1329 22                       ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v0, v253, v0, vcc
+	buffer_store_dwordx4 v[4:7], v0, s[88:91], 0 offen
+	v_accvgpr_read_b32 v0, a135
+	.loc	1 1328 14 is_stmt 1             ; triton_ragged_hstu_attention.py:1328:14 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_pk_mul_f32 v[152:153], s[92:93], v[8:9]
+	v_pk_mul_f32 v[154:155], s[92:93], v[10:11]
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v8, v64, v65
+	v_cvt_pk_bf16_f32 v9, v66, v67
+	v_cvt_pk_bf16_f32 v10, v68, v69
+	v_cvt_pk_bf16_f32 v11, v70, v71
+	.loc	1 1329 22 is_stmt 0             ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_lshl_u32 v0, v0, s1, 1
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v8, v10
+	v_permlane32_swap_b32_e32 v9, v11
+	.loc	1 1329 22                       ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v0, v253, v0, vcc
+	buffer_store_dwordx4 v[8:11], v0, s[88:91], 0 offen
+	v_accvgpr_read_b32 v0, a136
+	.loc	1 1328 14 is_stmt 1             ; triton_ragged_hstu_attention.py:1328:14 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_pk_mul_f32 v[156:157], s[92:93], v[12:13]
+	v_pk_mul_f32 v[158:159], s[92:93], v[14:15]
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v12, v72, v73
+	v_cvt_pk_bf16_f32 v13, v74, v75
+	v_cvt_pk_bf16_f32 v14, v76, v77
+	v_cvt_pk_bf16_f32 v15, v78, v79
+	.loc	1 1329 22 is_stmt 0             ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_lshl_u32 v0, v0, s1, 1
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v12, v14
+	v_permlane32_swap_b32_e32 v13, v15
+	.loc	1 1329 22                       ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v0, v253, v0, vcc
+	buffer_store_dwordx4 v[12:15], v0, s[88:91], 0 offen
+	v_accvgpr_read_b32 v0, a137
+	.loc	1 1328 14 is_stmt 1             ; triton_ragged_hstu_attention.py:1328:14 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_pk_mul_f32 v[128:129], s[92:93], v[16:17]
+	v_pk_mul_f32 v[130:131], s[92:93], v[18:19]
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v16, v96, v97
+	v_cvt_pk_bf16_f32 v17, v98, v99
+	v_cvt_pk_bf16_f32 v18, v100, v101
+	v_cvt_pk_bf16_f32 v19, v102, v103
+	.loc	1 1329 22 is_stmt 0             ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_lshl_u32 v0, v0, s1, 1
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v16, v18
+	v_permlane32_swap_b32_e32 v17, v19
+	.loc	1 1329 22                       ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v0, v253, v0, vcc
+	buffer_store_dwordx4 v[16:19], v0, s[88:91], 0 offen
+	v_accvgpr_read_b32 v0, a138
+	.loc	1 1328 14 is_stmt 1             ; triton_ragged_hstu_attention.py:1328:14 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_pk_mul_f32 v[132:133], s[92:93], v[20:21]
+	v_pk_mul_f32 v[134:135], s[92:93], v[22:23]
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v20, v104, v105
+	v_cvt_pk_bf16_f32 v21, v106, v107
+	v_cvt_pk_bf16_f32 v22, v108, v109
+	v_cvt_pk_bf16_f32 v23, v110, v111
+	.loc	1 1329 22 is_stmt 0             ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_lshl_u32 v0, v0, s1, 1
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v20, v22
+	v_permlane32_swap_b32_e32 v21, v23
+	.loc	1 1329 22                       ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v0, v253, v0, vcc
+	buffer_store_dwordx4 v[20:23], v0, s[88:91], 0 offen
+	v_accvgpr_read_b32 v0, a139
+	.loc	1 1328 14 is_stmt 1             ; triton_ragged_hstu_attention.py:1328:14 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_pk_mul_f32 v[136:137], s[92:93], v[24:25]
+	v_pk_mul_f32 v[138:139], s[92:93], v[26:27]
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v24, v112, v113
+	v_cvt_pk_bf16_f32 v25, v114, v115
+	v_cvt_pk_bf16_f32 v26, v116, v117
+	v_cvt_pk_bf16_f32 v27, v118, v119
+	.loc	1 1329 22 is_stmt 0             ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_lshl_u32 v0, v0, s1, 1
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v24, v26
+	v_permlane32_swap_b32_e32 v25, v27
+	.loc	1 1329 22                       ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v0, v253, v0, vcc
+	.loc	1 1327 20 is_stmt 1             ; triton_ragged_hstu_attention.py:1327:20 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s4, v255, 8
+	.loc	1 1329 22                       ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	buffer_store_dwordx4 v[24:27], v0, s[88:91], 0 offen
+	v_accvgpr_read_b32 v0, a140
+	.loc	1 1327 20                       ; triton_ragged_hstu_attention.py:1327:20 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s6, v255, 10
+	.loc	1 1328 14                       ; triton_ragged_hstu_attention.py:1328:14 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_pk_mul_f32 v[140:141], s[92:93], v[28:29]
+	v_pk_mul_f32 v[142:143], s[92:93], v[30:31]
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v28, v120, v121
+	v_cvt_pk_bf16_f32 v29, v122, v123
+	v_cvt_pk_bf16_f32 v30, v124, v125
+	v_cvt_pk_bf16_f32 v31, v126, v127
+	.loc	1 1329 22 is_stmt 0             ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_lshl_u32 v0, v0, s1, 1
+	.loc	1 1327 20 is_stmt 1             ; triton_ragged_hstu_attention.py:1327:20 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_mul_i32 s0, s98, s6
+	.loc	1 1328 14                       ; triton_ragged_hstu_attention.py:1328:14 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_pk_mul_f32 v[80:81], s[92:93], v[80:81]
+	v_pk_mul_f32 v[82:83], s[92:93], v[82:83]
+	v_pk_mul_f32 v[84:85], s[92:93], v[84:85]
+	v_pk_mul_f32 v[86:87], s[92:93], v[86:87]
+	.loc	1 1329 28                       ; triton_ragged_hstu_attention.py:1329:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v28, v30
+	v_permlane32_swap_b32_e32 v29, v31
+	.loc	1 1329 22 is_stmt 0             ; triton_ragged_hstu_attention.py:1329:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v0, v253, v0, vcc
+	v_accvgpr_read_b32 v32, a141
+	buffer_store_dwordx4 v[28:31], v0, s[88:91], 0 offen
+	.loc	1 1330 28 is_stmt 1             ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v0, v80, v81
+	v_cvt_pk_bf16_f32 v1, v82, v83
+	v_cvt_pk_bf16_f32 v2, v84, v85
+	v_cvt_pk_bf16_f32 v3, v86, v87
+	.loc	1 1330 22 is_stmt 0             ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_lshl_u32 v32, v32, s0, 1
+	.loc	1 1330 28                       ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v0, v2
+	v_permlane32_swap_b32_e32 v1, v3
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v32, v253, v32, vcc
+	s_mov_b32 s86, s14
+	s_mov_b32 s87, s15
+	.loc	1 1328 14 is_stmt 1             ; triton_ragged_hstu_attention.py:1328:14 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_pk_mul_f32 v[88:89], s[92:93], v[88:89]
+	v_pk_mul_f32 v[90:91], s[92:93], v[90:91]
+	v_pk_mul_f32 v[92:93], s[92:93], v[92:93]
+	v_pk_mul_f32 v[94:95], s[92:93], v[94:95]
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	buffer_store_dwordx4 v[0:3], v32, s[84:87], 0 offen
+	.loc	1 1330 28 is_stmt 0             ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v4, v88, v89
+	v_cvt_pk_bf16_f32 v5, v90, v91
+	v_accvgpr_read_b32 v0, a142
+	v_cvt_pk_bf16_f32 v6, v92, v93
+	v_cvt_pk_bf16_f32 v7, v94, v95
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_lshl_u32 v0, v0, s0, 1
+	.loc	1 1330 28                       ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v4, v6
+	v_permlane32_swap_b32_e32 v5, v7
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v0, v253, v0, vcc
+	.loc	1 1328 14 is_stmt 1             ; triton_ragged_hstu_attention.py:1328:14 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_pk_mul_f32 v[48:49], s[92:93], v[48:49]
+	v_pk_mul_f32 v[50:51], s[92:93], v[50:51]
+	v_pk_mul_f32 v[52:53], s[92:93], v[52:53]
+	v_pk_mul_f32 v[54:55], s[92:93], v[54:55]
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	buffer_store_dwordx4 v[4:7], v0, s[84:87], 0 offen
+	v_accvgpr_read_b32 v0, a143
+	.loc	1 1330 28 is_stmt 0             ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v8, v48, v49
+	v_cvt_pk_bf16_f32 v9, v50, v51
+	v_cvt_pk_bf16_f32 v10, v52, v53
+	v_cvt_pk_bf16_f32 v11, v54, v55
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_lshl_u32 v0, v0, s0, 1
+	.loc	1 1328 14 is_stmt 1             ; triton_ragged_hstu_attention.py:1328:14 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_pk_mul_f32 v[56:57], s[92:93], v[56:57]
+	v_pk_mul_f32 v[58:59], s[92:93], v[58:59]
+	v_pk_mul_f32 v[60:61], s[92:93], v[60:61]
+	v_pk_mul_f32 v[62:63], s[92:93], v[62:63]
+	.loc	1 1330 28                       ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v8, v10
+	v_permlane32_swap_b32_e32 v9, v11
+	.loc	1 1330 22 is_stmt 0             ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v0, v253, v0, vcc
+	.loc	1 1330 28                       ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v12, v56, v57
+	v_cvt_pk_bf16_f32 v13, v58, v59
+	v_cvt_pk_bf16_f32 v14, v60, v61
+	v_cvt_pk_bf16_f32 v15, v62, v63
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	buffer_store_dwordx4 v[8:11], v0, s[84:87], 0 offen
+	v_add_lshl_u32 v0, v201, s0, 1
+	.loc	1 1330 28                       ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v12, v14
+	v_permlane32_swap_b32_e32 v13, v15
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v0, v253, v0, vcc
+	.loc	1 1330 28                       ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v16, v128, v129
+	v_cvt_pk_bf16_f32 v17, v130, v131
+	v_cvt_pk_bf16_f32 v18, v132, v133
+	v_cvt_pk_bf16_f32 v19, v134, v135
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	buffer_store_dwordx4 v[12:15], v0, s[84:87], 0 offen
+	v_add_lshl_u32 v0, v202, s0, 1
+	.loc	1 1330 28                       ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v16, v18
+	v_permlane32_swap_b32_e32 v17, v19
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v0, v253, v0, vcc
+	.loc	1 1330 28                       ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v20, v136, v137
+	v_cvt_pk_bf16_f32 v21, v138, v139
+	v_cvt_pk_bf16_f32 v22, v140, v141
+	v_cvt_pk_bf16_f32 v23, v142, v143
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	buffer_store_dwordx4 v[16:19], v0, s[84:87], 0 offen
+	v_add_lshl_u32 v0, v203, s0, 1
+	.loc	1 1330 28                       ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v20, v22
+	v_permlane32_swap_b32_e32 v21, v23
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v0, v253, v0, vcc
+	.loc	1 1330 28                       ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v24, v144, v145
+	v_cvt_pk_bf16_f32 v25, v146, v147
+	v_cvt_pk_bf16_f32 v26, v148, v149
+	v_cvt_pk_bf16_f32 v27, v150, v151
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	buffer_store_dwordx4 v[20:23], v0, s[84:87], 0 offen
+	v_add_lshl_u32 v0, v204, s0, 1
+	.loc	1 1330 28                       ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v24, v26
+	v_permlane32_swap_b32_e32 v25, v27
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v0, v253, v0, vcc
+	buffer_store_dwordx4 v[24:27], v0, s[84:87], 0 offen
+	v_add_lshl_u32 v0, v205, s0, 1
+.Ltmp35:
+	.loc	1 1770 41 is_stmt 1             ; triton_ragged_hstu_attention.py:1770:41
+	v_readlane_b32 s0, v255, 7
+	v_readlane_b32 s1, v255, 12
+.Ltmp36:
+	.loc	1 1330 28                       ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cvt_pk_bf16_f32 v28, v152, v153
+	v_cvt_pk_bf16_f32 v29, v154, v155
+	v_cvt_pk_bf16_f32 v30, v156, v157
+	v_cvt_pk_bf16_f32 v31, v158, v159
+.Ltmp37:
+	.loc	1 1770 41                       ; triton_ragged_hstu_attention.py:1770:41
+	s_addk_i32 s98, 0x80
+	s_add_i32 s97, s97, s0
+	s_mov_b32 s0, s99
+	s_add_i32 s94, s94, s1
+.Ltmp38:
+	.loc	1 1330 28                       ; triton_ragged_hstu_attention.py:1330:28 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_permlane32_swap_b32_e32 v28, v30
+	v_permlane32_swap_b32_e32 v29, v31
+	.loc	1 1330 22 is_stmt 0             ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cndmask_b32_e32 v0, v253, v0, vcc
+.Ltmp39:
+	.loc	1 1770 41 is_stmt 1             ; triton_ragged_hstu_attention.py:1770:41
+	v_add_u32_e32 v210, s0, v210
+	s_cmp_lt_i32 s98, s33
+	v_add_u32_e32 v211, s0, v211
+.Ltmp40:
+	.loc	1 1327 20                       ; triton_ragged_hstu_attention.py:1327:20 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s5, v255, 9
+	v_readlane_b32 s7, v255, 11
+	.loc	1 1330 22                       ; triton_ragged_hstu_attention.py:1330:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	buffer_store_dwordx4 v[28:31], v0, s[84:87], 0 offen
+.Ltmp41:
+	.loc	1 1770 41                       ; triton_ragged_hstu_attention.py:1770:41
+	s_cbranch_scc0 .LBB0_41
+.LBB0_3:                                ; =>This Loop Header: Depth=1
+                                        ;     Child Loop BB0_37 Depth 2
+.Ltmp42:
+	.loc	1 1164 23                       ; triton_ragged_hstu_attention.py:1164:23 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_or_b32_e32 v33, s98, v187
+	.loc	1 1195 16                       ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v4, 0
+	.loc	1 1171 22                       ; triton_ragged_hstu_attention.py:1171:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cmp_gt_i32_e32 vcc, s33, v33
+	.loc	1 1195 16                       ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v0, 0
+	v_mov_b32_e32 v1, 0
+	v_mov_b32_e32 v2, 0
+	v_mov_b32_e32 v3, v4
+	s_and_saveexec_b64 s[0:1], vcc
+	s_cbranch_execz .LBB0_5
+; %bb.4:                                ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	v_mad_u64_u32 v[0:1], s[2:3], v33, s70, v[176:177]
+	v_readlane_b32 s2, v255, 0
+	v_ashrrev_i32_e32 v1, 31, v0
+	v_readlane_b32 s3, v255, 1
+	s_nop 1
+	v_lshl_add_u64 v[0:1], v[0:1], 1, s[2:3]
+	.loc	1 1195 16                       ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[0:3], v[0:1], off
+.LBB0_5:                                ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16                          ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[0:1]
+	.loc	1 1161 26 is_stmt 1             ; triton_ragged_hstu_attention.py:1161:26 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_or_b32_e32 v5, 16, v187
+	.loc	1 1164 23                       ; triton_ragged_hstu_attention.py:1164:23 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_or_b32_e32 v32, s98, v5
+	.loc	1 1171 22                       ; triton_ragged_hstu_attention.py:1171:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cmp_gt_i32_e64 s[2:3], s33, v32
+	v_mov_b32_e32 v5, v4
+	v_mov_b32_e32 v6, v4
+	v_mov_b32_e32 v7, v4
+	.loc	1 1195 16                       ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_and_saveexec_b64 s[0:1], s[2:3]
+	s_cbranch_execz .LBB0_7
+; %bb.6:                                ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 1169 48                       ; triton_ragged_hstu_attention.py:1169:48 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mad_u64_u32 v[4:5], s[4:5], v32, s70, v[176:177]
+	.loc	1 1169 18 is_stmt 0             ; triton_ragged_hstu_attention.py:1169:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s4, v255, 0
+	v_ashrrev_i32_e32 v5, 31, v4
+	v_readlane_b32 s5, v255, 1
+	s_nop 1
+	v_lshl_add_u64 v[4:5], v[4:5], 1, s[4:5]
+	.loc	1 1195 16 is_stmt 1             ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[4:7], v[4:5], off
+.LBB0_7:                                ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[0:1]
+	.loc	1 1164 23 is_stmt 1             ; triton_ragged_hstu_attention.py:1164:23 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_or_b32_e32 v8, 32, v33
+	.loc	1 1195 16                       ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v12, 0
+	.loc	1 1169 36                       ; triton_ragged_hstu_attention.py:1169:36 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mul_lo_u32 v13, v8, s70
+	.loc	1 1171 22                       ; triton_ragged_hstu_attention.py:1171:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cmp_gt_i32_e64 s[0:1], s33, v8
+	.loc	1 1195 16                       ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v8, 0
+	v_mov_b32_e32 v9, 0
+	v_mov_b32_e32 v10, 0
+	v_mov_b32_e32 v11, v12
+	s_and_saveexec_b64 s[4:5], s[0:1]
+	s_cbranch_execz .LBB0_9
+; %bb.8:                                ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 1169 48                       ; triton_ragged_hstu_attention.py:1169:48 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v8, v13, v176
+	.loc	1 1169 18 is_stmt 0             ; triton_ragged_hstu_attention.py:1169:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s6, v255, 0
+	v_ashrrev_i32_e32 v9, 31, v8
+	v_readlane_b32 s7, v255, 1
+	s_nop 1
+	v_lshl_add_u64 v[8:9], v[8:9], 1, s[6:7]
+	.loc	1 1195 16 is_stmt 1             ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[8:11], v[8:9], off
+.LBB0_9:                                ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[4:5]
+	.loc	1 1164 23 is_stmt 1             ; triton_ragged_hstu_attention.py:1164:23 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_or_b32_e32 v14, 48, v33
+	.loc	1 1169 36                       ; triton_ragged_hstu_attention.py:1169:36 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v16, s81, v13
+	.loc	1 1171 22                       ; triton_ragged_hstu_attention.py:1171:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cmp_gt_i32_e64 s[6:7], s33, v14
+	v_mov_b32_e32 v13, v12
+	v_mov_b32_e32 v14, v12
+	v_mov_b32_e32 v15, v12
+	.loc	1 1195 16                       ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_and_saveexec_b64 s[4:5], s[6:7]
+	s_cbranch_execz .LBB0_11
+; %bb.10:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 1169 48                       ; triton_ragged_hstu_attention.py:1169:48 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v12, v16, v176
+	.loc	1 1169 18 is_stmt 0             ; triton_ragged_hstu_attention.py:1169:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s8, v255, 0
+	v_ashrrev_i32_e32 v13, 31, v12
+	v_readlane_b32 s9, v255, 1
+	s_nop 1
+	v_lshl_add_u64 v[12:13], v[12:13], 1, s[8:9]
+	.loc	1 1195 16 is_stmt 1             ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[12:15], v[12:13], off
+.LBB0_11:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[4:5]
+	.loc	1 1164 23 is_stmt 1             ; triton_ragged_hstu_attention.py:1164:23 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_or_b32_e32 v17, 64, v33
+	.loc	1 1195 16                       ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v20, 0
+	.loc	1 1169 36                       ; triton_ragged_hstu_attention.py:1169:36 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v21, s81, v16
+	.loc	1 1171 22                       ; triton_ragged_hstu_attention.py:1171:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cmp_gt_i32_e64 s[4:5], s33, v17
+	.loc	1 1195 16                       ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v16, 0
+	v_mov_b32_e32 v17, 0
+	v_mov_b32_e32 v18, 0
+	v_mov_b32_e32 v19, v20
+	s_and_saveexec_b64 s[8:9], s[4:5]
+	s_cbranch_execz .LBB0_13
+; %bb.12:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 1169 48                       ; triton_ragged_hstu_attention.py:1169:48 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v16, v21, v176
+	.loc	1 1169 18 is_stmt 0             ; triton_ragged_hstu_attention.py:1169:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s10, v255, 0
+	v_ashrrev_i32_e32 v17, 31, v16
+	v_readlane_b32 s11, v255, 1
+	s_nop 1
+	v_lshl_add_u64 v[16:17], v[16:17], 1, s[10:11]
+	.loc	1 1195 16 is_stmt 1             ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[16:19], v[16:17], off
+.LBB0_13:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[8:9]
+	.loc	1 1164 23 is_stmt 1             ; triton_ragged_hstu_attention.py:1164:23 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_or_b32_e32 v22, 0x50, v33
+	.loc	1 1169 36                       ; triton_ragged_hstu_attention.py:1169:36 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v24, s81, v21
+	.loc	1 1171 22                       ; triton_ragged_hstu_attention.py:1171:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cmp_gt_i32_e64 s[10:11], s33, v22
+	v_mov_b32_e32 v21, v20
+	v_mov_b32_e32 v22, v20
+	v_mov_b32_e32 v23, v20
+	.loc	1 1195 16                       ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_and_saveexec_b64 s[8:9], s[10:11]
+	s_cbranch_execz .LBB0_15
+; %bb.14:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 1169 48                       ; triton_ragged_hstu_attention.py:1169:48 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v20, v24, v176
+	.loc	1 1169 18 is_stmt 0             ; triton_ragged_hstu_attention.py:1169:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s16, v255, 0
+	v_ashrrev_i32_e32 v21, 31, v20
+	v_readlane_b32 s17, v255, 1
+	s_nop 1
+	v_lshl_add_u64 v[20:21], v[20:21], 1, s[16:17]
+	.loc	1 1195 16 is_stmt 1             ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[20:23], v[20:21], off
+.LBB0_15:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[8:9]
+	.loc	1 1164 23 is_stmt 1             ; triton_ragged_hstu_attention.py:1164:23 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_or_b32_e32 v25, 0x60, v33
+	.loc	1 1195 16                       ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v28, 0
+	.loc	1 1169 36                       ; triton_ragged_hstu_attention.py:1169:36 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v34, s81, v24
+	.loc	1 1171 22                       ; triton_ragged_hstu_attention.py:1171:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cmp_gt_i32_e64 s[8:9], s33, v25
+	.loc	1 1195 16                       ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v24, 0
+	v_mov_b32_e32 v25, 0
+	v_mov_b32_e32 v26, 0
+	v_mov_b32_e32 v27, v28
+	s_and_saveexec_b64 s[16:17], s[8:9]
+	s_cbranch_execz .LBB0_17
+; %bb.16:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 1169 48                       ; triton_ragged_hstu_attention.py:1169:48 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v24, v34, v176
+	.loc	1 1169 18 is_stmt 0             ; triton_ragged_hstu_attention.py:1169:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s18, v255, 0
+	v_ashrrev_i32_e32 v25, 31, v24
+	v_readlane_b32 s19, v255, 1
+	s_nop 1
+	v_lshl_add_u64 v[24:25], v[24:25], 1, s[18:19]
+	.loc	1 1195 16 is_stmt 1             ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[24:27], v[24:25], off
+.LBB0_17:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[16:17]
+	.loc	1 1164 23 is_stmt 1             ; triton_ragged_hstu_attention.py:1164:23 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_or_b32_e32 v29, 0x70, v33
+	.loc	1 1171 22                       ; triton_ragged_hstu_attention.py:1171:22 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_cmp_gt_i32_e64 s[16:17], s33, v29
+	v_mov_b32_e32 v29, v28
+	v_mov_b32_e32 v30, v28
+	v_mov_b32_e32 v31, v28
+	.loc	1 1195 16                       ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_and_saveexec_b64 s[18:19], s[16:17]
+	s_cbranch_execz .LBB0_19
+.Ltmp43:
+; %bb.18:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 1770 41                       ; triton_ragged_hstu_attention.py:1770:41
+	v_add_u32_e32 v28, s81, v176
+	v_add_u32_e32 v28, v34, v28
+.Ltmp44:
+	.loc	1 1169 18                       ; triton_ragged_hstu_attention.py:1169:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s20, v255, 0
+	v_ashrrev_i32_e32 v29, 31, v28
+	v_readlane_b32 s21, v255, 1
+	s_nop 1
+	v_lshl_add_u64 v[28:29], v[28:29], 1, s[20:21]
+	.loc	1 1195 16                       ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[28:31], v[28:29], off
+.LBB0_19:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[18:19]
+	v_accvgpr_read_b32 v34, a132
+	.loc	1 1195 16                       ; triton_ragged_hstu_attention.py:1195:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v254, 0, v34
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	s_waitcnt vmcnt(0)
+	ds_write2st64_b64 v254, v[0:1], v[4:5] offset1:8
+	ds_write2st64_b64 v254, v[8:9], v[12:13] offset0:16 offset1:24
+	ds_write2st64_b64 v254, v[16:17], v[20:21] offset0:32 offset1:40
+	ds_write2st64_b64 v254, v[24:25], v[28:29] offset0:48 offset1:56
+	ds_write2st64_b64 v243, v[2:3], v[6:7] offset1:8
+	ds_write2st64_b64 v243, v[10:11], v[14:15] offset0:16 offset1:24
+	ds_write2st64_b64 v243, v[18:19], v[22:23] offset0:32 offset1:40
+	ds_write2st64_b64 v243, v[26:27], v[30:31] offset0:48 offset1:56
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	ds_read_b64_tr_b16 a[0:1], v212
+	ds_read_b64_tr_b16 a[4:5], v212 offset:4096
+	ds_read_b64_tr_b16 a[8:9], v212 offset:8192
+	ds_read_b64_tr_b16 a[12:13], v212 offset:12288
+	ds_read_b64_tr_b16 a[16:17], v212 offset:16384
+	ds_read_b64_tr_b16 a[20:21], v212 offset:20480
+	ds_read_b64_tr_b16 a[24:25], v212 offset:24576
+	ds_read_b64_tr_b16 a[28:29], v212 offset:28672
+	ds_read_b64_tr_b16 a[2:3], v213 offset:2048
+	ds_read_b64_tr_b16 a[6:7], v213 offset:6144
+	ds_read_b64_tr_b16 a[10:11], v213 offset:10240
+	ds_read_b64_tr_b16 a[14:15], v213 offset:14336
+	ds_read_b64_tr_b16 a[18:19], v213 offset:18432
+	ds_read_b64_tr_b16 a[22:23], v213 offset:22528
+	ds_read_b64_tr_b16 a[26:27], v213 offset:26624
+	ds_read_b64_tr_b16 a[30:31], v213 offset:30720
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	ds_write_b128 v244, v[0:3]
+	ds_write_b128 v244, v[4:7] offset:4096
+	ds_write_b128 v244, v[8:11] offset:8192
+	ds_write_b128 v244, v[12:15] offset:12288
+	ds_write_b128 v244, v[16:19] offset:16384
+	ds_write_b128 v244, v[20:23] offset:20480
+	ds_write_b128 v244, v[24:27] offset:24576
+	ds_write_b128 v244, v[28:31] offset:28672
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	ds_read_b128 a[32:35], v245
+	ds_read_b128 a[36:39], v246
+	ds_read_b128 a[40:43], v247
+	ds_read_b128 a[44:47], v248
+	ds_read_b128 a[48:51], v249
+	ds_read_b128 a[52:55], v250
+	ds_read_b128 a[56:59], v251
+	ds_read_b128 a[60:63], v252
+	.loc	1 1196 16 is_stmt 1             ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v6, 0
+	.loc	1 1170 36                       ; triton_ragged_hstu_attention.py:1170:36 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mul_lo_u32 v33, v33, s72
+	.loc	1 1196 16                       ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v2, 0
+	v_mov_b32_e32 v3, 0
+	v_mov_b32_e32 v4, 0
+	v_mov_b32_e32 v5, v6
+	s_and_saveexec_b64 s[18:19], vcc
+	s_cbranch_execz .LBB0_21
+; %bb.20:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 1170 48                       ; triton_ragged_hstu_attention.py:1170:48 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v0, v33, v176
+	.loc	1 1170 18 is_stmt 0             ; triton_ragged_hstu_attention.py:1170:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s20, v255, 2
+	v_ashrrev_i32_e32 v1, 31, v0
+	v_readlane_b32 s21, v255, 3
+	s_nop 1
+	v_lshl_add_u64 v[0:1], v[0:1], 1, s[20:21]
+	.loc	1 1196 16 is_stmt 1             ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[2:5], v[0:1], off
+.LBB0_21:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[18:19]
+	v_mov_b32_e32 v7, v6
+	v_mov_b32_e32 v8, v6
+	v_mov_b32_e32 v9, v6
+	.loc	1 1196 16                       ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_and_saveexec_b64 s[18:19], s[2:3]
+	s_cbranch_execz .LBB0_23
+; %bb.22:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 1170 48 is_stmt 1             ; triton_ragged_hstu_attention.py:1170:48 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mad_u64_u32 v[0:1], s[2:3], v32, s72, v[176:177]
+	.loc	1 1170 18 is_stmt 0             ; triton_ragged_hstu_attention.py:1170:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s2, v255, 2
+	v_ashrrev_i32_e32 v1, 31, v0
+	v_readlane_b32 s3, v255, 3
+	s_nop 1
+	v_lshl_add_u64 v[0:1], v[0:1], 1, s[2:3]
+	.loc	1 1196 16 is_stmt 1             ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[6:9], v[0:1], off
+.LBB0_23:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[18:19]
+	.loc	1 1170 36 is_stmt 1             ; triton_ragged_hstu_attention.py:1170:36 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s2, v255, 6
+	.loc	1 1196 16                       ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v14, 0
+	v_mov_b32_e32 v10, 0
+	.loc	1 1170 36                       ; triton_ragged_hstu_attention.py:1170:36 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v0, s2, v33
+	.loc	1 1196 16                       ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v11, 0
+	v_mov_b32_e32 v12, 0
+	v_mov_b32_e32 v13, v14
+	s_and_saveexec_b64 s[2:3], s[0:1]
+	s_cbranch_execz .LBB0_25
+; %bb.24:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 1170 48                       ; triton_ragged_hstu_attention.py:1170:48 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v10, v0, v176
+	.loc	1 1170 18 is_stmt 0             ; triton_ragged_hstu_attention.py:1170:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s0, v255, 2
+	v_ashrrev_i32_e32 v11, 31, v10
+	v_readlane_b32 s1, v255, 3
+	s_nop 1
+	v_lshl_add_u64 v[10:11], v[10:11], 1, s[0:1]
+	.loc	1 1196 16 is_stmt 1             ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[10:13], v[10:11], off
+.LBB0_25:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[2:3]
+	.loc	1 1170 36 is_stmt 1             ; triton_ragged_hstu_attention.py:1170:36 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v0, s95, v0
+	v_mov_b32_e32 v15, v14
+	v_mov_b32_e32 v16, v14
+	v_mov_b32_e32 v17, v14
+	.loc	1 1196 16                       ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_and_saveexec_b64 s[0:1], s[6:7]
+	s_cbranch_execz .LBB0_27
+; %bb.26:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 1170 48                       ; triton_ragged_hstu_attention.py:1170:48 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v14, v0, v176
+	.loc	1 1170 18 is_stmt 0             ; triton_ragged_hstu_attention.py:1170:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s2, v255, 2
+	v_ashrrev_i32_e32 v15, 31, v14
+	v_readlane_b32 s3, v255, 3
+	s_nop 1
+	v_lshl_add_u64 v[14:15], v[14:15], 1, s[2:3]
+	.loc	1 1196 16 is_stmt 1             ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[14:17], v[14:15], off
+.LBB0_27:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[0:1]
+	.loc	1 1196 16                       ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v22, 0
+	.loc	1 1170 36 is_stmt 1             ; triton_ragged_hstu_attention.py:1170:36 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v0, s95, v0
+	.loc	1 1196 16                       ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v18, 0
+	v_mov_b32_e32 v19, 0
+	v_mov_b32_e32 v20, 0
+	v_mov_b32_e32 v21, v22
+	s_and_saveexec_b64 s[0:1], s[4:5]
+	s_cbranch_execz .LBB0_29
+; %bb.28:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 1170 48                       ; triton_ragged_hstu_attention.py:1170:48 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v18, v0, v176
+	.loc	1 1170 18 is_stmt 0             ; triton_ragged_hstu_attention.py:1170:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s2, v255, 2
+	v_ashrrev_i32_e32 v19, 31, v18
+	v_readlane_b32 s3, v255, 3
+	s_nop 1
+	v_lshl_add_u64 v[18:19], v[18:19], 1, s[2:3]
+	.loc	1 1196 16 is_stmt 1             ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[18:21], v[18:19], off
+.LBB0_29:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[0:1]
+	.loc	1 1170 36 is_stmt 1             ; triton_ragged_hstu_attention.py:1170:36 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v0, s95, v0
+	v_mov_b32_e32 v23, v22
+	v_mov_b32_e32 v24, v22
+	v_mov_b32_e32 v25, v22
+	.loc	1 1196 16                       ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_and_saveexec_b64 s[0:1], s[10:11]
+	s_cbranch_execz .LBB0_31
+; %bb.30:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 1170 48                       ; triton_ragged_hstu_attention.py:1170:48 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v22, v0, v176
+	.loc	1 1170 18 is_stmt 0             ; triton_ragged_hstu_attention.py:1170:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s2, v255, 2
+	v_ashrrev_i32_e32 v23, 31, v22
+	v_readlane_b32 s3, v255, 3
+	s_nop 1
+	v_lshl_add_u64 v[22:23], v[22:23], 1, s[2:3]
+	.loc	1 1196 16 is_stmt 1             ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[22:25], v[22:23], off
+.LBB0_31:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[0:1]
+	.loc	1 1196 16                       ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v30, 0
+	.loc	1 1170 36 is_stmt 1             ; triton_ragged_hstu_attention.py:1170:36 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v0, s95, v0
+	.loc	1 1196 16                       ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_mov_b32_e32 v26, 0
+	v_mov_b32_e32 v27, 0
+	v_mov_b32_e32 v28, 0
+	v_mov_b32_e32 v29, v30
+	s_and_saveexec_b64 s[0:1], s[8:9]
+	s_cbranch_execz .LBB0_33
+; %bb.32:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 1170 48                       ; triton_ragged_hstu_attention.py:1170:48 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_add_u32_e32 v26, v0, v176
+	.loc	1 1170 18 is_stmt 0             ; triton_ragged_hstu_attention.py:1170:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s2, v255, 2
+	v_ashrrev_i32_e32 v27, 31, v26
+	v_readlane_b32 s3, v255, 3
+	s_nop 1
+	v_lshl_add_u64 v[26:27], v[26:27], 1, s[2:3]
+	.loc	1 1196 16 is_stmt 1             ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[26:29], v[26:27], off
+.LBB0_33:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[0:1]
+	v_mov_b32_e32 v31, v30
+	v_mov_b32_e32 v32, v30
+	v_mov_b32_e32 v33, v30
+	.loc	1 1196 16                       ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_and_saveexec_b64 s[0:1], s[16:17]
+	s_cbranch_execz .LBB0_35
+.Ltmp45:
+; %bb.34:                               ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 1770 41 is_stmt 1             ; triton_ragged_hstu_attention.py:1770:41
+	v_add_u32_e32 v1, s95, v176
+	v_add_u32_e32 v0, v0, v1
+.Ltmp46:
+	.loc	1 1170 18                       ; triton_ragged_hstu_attention.py:1170:18 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_readlane_b32 s2, v255, 2
+	v_ashrrev_i32_e32 v1, 31, v0
+	v_readlane_b32 s3, v255, 3
+	s_nop 1
+	v_lshl_add_u64 v[0:1], v[0:1], 1, s[2:3]
+	.loc	1 1196 16                       ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	global_load_dwordx4 v[30:33], v[0:1], off
+.LBB0_35:                               ; %.lr.ph
+                                        ;   in Loop: Header=BB0_3 Depth=1
+	.loc	1 0 16 is_stmt 0                ; triton_ragged_hstu_attention.py:0:16
+	s_or_b64 exec, exec, s[0:1]
+	.loc	1 1196 16                       ; triton_ragged_hstu_attention.py:1196:16 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	s_waitcnt vmcnt(0)
+	ds_write_b128 v244, v[2:5]
+	ds_write_b128 v244, v[6:9] offset:4096
+	ds_write_b128 v244, v[10:13] offset:8192
+	ds_write_b128 v244, v[14:17] offset:12288
+	ds_write_b128 v244, v[18:21] offset:16384
+	ds_write_b128 v244, v[22:25] offset:20480
+	ds_write_b128 v244, v[26:29] offset:24576
+	ds_write_b128 v244, v[30:33] offset:28672
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	ds_read_b128 a[64:67], v245
+	ds_read_b128 a[68:71], v246
+	ds_read_b128 a[72:75], v247
+	ds_read_b128 a[76:79], v248
+	ds_read_b128 a[80:83], v249
+	ds_read_b128 a[84:87], v250
+	ds_read_b128 a[88:91], v251
+	ds_read_b128 a[92:95], v252
+	.loc	1 1164 23 is_stmt 1             ; triton_ragged_hstu_attention.py:1164:23 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	v_or_b32_e32 v184, s98, v188
+	v_mov_b32_e32 v189, 0
+.Ltmp47:
+	.loc	1 902 48                        ; triton_ragged_hstu_attention.py:902:48 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mov_b32_e32 v177, v184
+	s_mov_b32 s86, 0
+	v_mov_b32_e32 v80, 0
+	v_mov_b32_e32 v81, 0
+	v_mov_b32_e32 v82, 0
+	v_mov_b32_e32 v83, 0
+	v_mov_b32_e32 v84, 0
+	v_mov_b32_e32 v85, 0
+	v_mov_b32_e32 v86, 0
+	v_mov_b32_e32 v87, 0
+	v_mov_b32_e32 v88, 0
+	v_mov_b32_e32 v89, 0
+	v_mov_b32_e32 v90, 0
+	v_mov_b32_e32 v91, 0
+	v_mov_b32_e32 v92, 0
+	v_mov_b32_e32 v93, 0
+	v_mov_b32_e32 v94, 0
+	v_mov_b32_e32 v95, 0
+	v_mov_b32_e32 v48, 0
+	v_mov_b32_e32 v49, 0
+	v_mov_b32_e32 v50, 0
+	v_mov_b32_e32 v51, 0
+	v_mov_b32_e32 v52, 0
+	v_mov_b32_e32 v53, 0
+	v_mov_b32_e32 v54, 0
+	v_mov_b32_e32 v55, 0
+	v_mov_b32_e32 v56, 0
+	v_mov_b32_e32 v57, 0
+	v_mov_b32_e32 v58, 0
+	v_mov_b32_e32 v59, 0
+	v_mov_b32_e32 v60, 0
+	v_mov_b32_e32 v61, 0
+	v_mov_b32_e32 v62, 0
+	v_mov_b32_e32 v63, 0
+	v_mov_b32_e32 v16, 0
+	v_mov_b32_e32 v17, 0
+	v_mov_b32_e32 v18, 0
+	v_mov_b32_e32 v19, 0
+	v_mov_b32_e32 v20, 0
+	v_mov_b32_e32 v21, 0
+	v_mov_b32_e32 v22, 0
+	v_mov_b32_e32 v23, 0
+	v_mov_b32_e32 v24, 0
+	v_mov_b32_e32 v25, 0
+	v_mov_b32_e32 v26, 0
+	v_mov_b32_e32 v27, 0
+	v_mov_b32_e32 v28, 0
+	v_mov_b32_e32 v29, 0
+	v_mov_b32_e32 v30, 0
+	v_mov_b32_e32 v31, 0
+	v_mov_b32_e32 v0, 0
+	v_mov_b32_e32 v1, 0
+	v_mov_b32_e32 v2, 0
+	v_mov_b32_e32 v3, 0
+	v_mov_b32_e32 v4, 0
+	v_mov_b32_e32 v5, 0
+	v_mov_b32_e32 v6, 0
+	v_mov_b32_e32 v7, 0
+	v_mov_b32_e32 v8, 0
+	v_mov_b32_e32 v9, 0
+	v_mov_b32_e32 v10, 0
+	v_mov_b32_e32 v11, 0
+	v_mov_b32_e32 v12, 0
+	v_mov_b32_e32 v13, 0
+	v_mov_b32_e32 v14, 0
+	v_mov_b32_e32 v15, 0
+	v_mov_b32_e32 v32, 0
+	v_mov_b32_e32 v33, 0
+	v_mov_b32_e32 v34, 0
+	v_mov_b32_e32 v35, 0
+	v_mov_b32_e32 v36, 0
+	v_mov_b32_e32 v37, 0
+	v_mov_b32_e32 v38, 0
+	v_mov_b32_e32 v39, 0
+	v_mov_b32_e32 v40, 0
+	v_mov_b32_e32 v41, 0
+	v_mov_b32_e32 v42, 0
+	v_mov_b32_e32 v43, 0
+	v_mov_b32_e32 v44, 0
+	v_mov_b32_e32 v45, 0
+	v_mov_b32_e32 v46, 0
+	v_mov_b32_e32 v47, 0
+	v_mov_b32_e32 v64, 0
+	v_mov_b32_e32 v65, 0
+	v_mov_b32_e32 v66, 0
+	v_mov_b32_e32 v67, 0
+	v_mov_b32_e32 v68, 0
+	v_mov_b32_e32 v69, 0
+	v_mov_b32_e32 v70, 0
+	v_mov_b32_e32 v71, 0
+	v_mov_b32_e32 v72, 0
+	v_mov_b32_e32 v73, 0
+	v_mov_b32_e32 v74, 0
+	v_mov_b32_e32 v75, 0
+	v_mov_b32_e32 v76, 0
+	v_mov_b32_e32 v77, 0
+	v_mov_b32_e32 v78, 0
+	v_mov_b32_e32 v79, 0
+	v_mov_b32_e32 v96, 0
+	v_mov_b32_e32 v97, 0
+	v_mov_b32_e32 v98, 0
+	v_mov_b32_e32 v99, 0
+	v_mov_b32_e32 v100, 0
+	v_mov_b32_e32 v101, 0
+	v_mov_b32_e32 v102, 0
+	v_mov_b32_e32 v103, 0
+	v_mov_b32_e32 v104, 0
+	v_mov_b32_e32 v105, 0
+	v_mov_b32_e32 v106, 0
+	v_mov_b32_e32 v107, 0
+	v_mov_b32_e32 v108, 0
+	v_mov_b32_e32 v109, 0
+	v_mov_b32_e32 v110, 0
+	v_mov_b32_e32 v111, 0
+	v_mov_b32_e32 v112, 0
+	v_mov_b32_e32 v113, 0
+	v_mov_b32_e32 v114, 0
+	v_mov_b32_e32 v115, 0
+	v_mov_b32_e32 v116, 0
+	v_mov_b32_e32 v117, 0
+	v_mov_b32_e32 v118, 0
+	v_mov_b32_e32 v119, 0
+	v_mov_b32_e32 v120, 0
+	v_mov_b32_e32 v121, 0
+	v_mov_b32_e32 v122, 0
+	v_mov_b32_e32 v123, 0
+	v_mov_b32_e32 v124, 0
+	v_mov_b32_e32 v125, 0
+	v_mov_b32_e32 v126, 0
+	s_mov_b32 s74, s94
+	s_mov_b32 s87, s97
+	v_mov_b32_e32 v127, v189
+	s_mov_b32 s90, s98
+	s_branch .LBB0_37
+.LBB0_36:                               ;   in Loop: Header=BB0_37 Depth=2
+	.loc	1 0 48 is_stmt 0                ; triton_ragged_hstu_attention.py:0:48
+	s_or_b64 exec, exec, s[2:3]
+	.loc	1 1001 8 is_stmt 1              ; triton_ragged_hstu_attention.py:1001:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_u32_e32 v128, s86, v211
+	v_cndmask_b32_e32 v128, v253, v128, vcc
+	v_add_u32_e32 v129, s86, v210
+	.loc	1 922 23                        ; triton_ragged_hstu_attention.py:922:23 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	s_waitcnt vmcnt(0)
+	ds_write_b128 v207, v[160:163]
+	ds_write_b128 v207, v[164:167] offset:128
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	.loc	1 1001 8                        ; triton_ragged_hstu_attention.py:1001:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v129, v253, v129, s[0:1]
+	buffer_load_dwordx4 v[168:171], v128, s[12:15], 0 offen
+	buffer_load_dwordx4 v[172:175], v129, s[12:15], 0 offen
+	.loc	1 922 23                        ; triton_ragged_hstu_attention.py:922:23 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	ds_read_b128 v[150:153], v214
+	ds_read_b128 v[190:193], v215
+	ds_read_b128 v[194:197], v216
+	ds_read_b128 a[96:99], v217
+	ds_read_b128 a[100:103], v218
+	ds_read_b128 a[104:107], v219
+	ds_read_b128 a[108:111], v220
+	ds_read_b128 a[112:115], v221
+	.loc	1 925 25                        ; triton_ragged_hstu_attention.py:925:25 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(7)
+	v_mfma_f32_32x32x16_bf16 v[128:143], v[150:153], a[32:35], 0
+	.loc	1 1008 35                       ; triton_ragged_hstu_attention.py:1008:35 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	.loc	1 900 26                        ; triton_ragged_hstu_attention.py:900:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_u32_e32 v144, s90, v185
+	v_add_u32_e32 v145, 1, v144
+	v_or_b32_e32 v146, 3, v144
+	v_or_b32_e32 v147, 2, v144
+	v_or_b32_e32 v148, 9, v144
+	.loc	1 925 25                        ; triton_ragged_hstu_attention.py:925:25 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[128:143], v[190:193], a[36:39], v[128:143]
+	.loc	1 900 26                        ; triton_ragged_hstu_attention.py:900:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_or_b32_e32 v149, 8, v144
+	v_or_b32_e32 v150, 11, v144
+	v_or_b32_e32 v151, 10, v144
+	v_or_b32_e32 v152, 17, v144
+	v_or_b32_e32 v153, 16, v144
+	v_or_b32_e32 v154, 19, v144
+	v_or_b32_e32 v155, 18, v144
+	.loc	1 925 25                        ; triton_ragged_hstu_attention.py:925:25 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[128:143], v[194:197], a[40:43], v[128:143]
+	.loc	1 900 26                        ; triton_ragged_hstu_attention.py:900:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_or_b32_e32 v156, 25, v144
+	v_or_b32_e32 v157, 24, v144
+	v_or_b32_e32 v158, 27, v144
+	v_or_b32_e32 v159, 26, v144
+	.loc	1 902 48                        ; triton_ragged_hstu_attention.py:902:48 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cmp_eq_u32_e64 s[60:61], v144, v184
+	.loc	1 915 12                        ; triton_ragged_hstu_attention.py:915:12 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_min_i32_e32 v144, s71, v144
+	.loc	1 902 48                        ; triton_ragged_hstu_attention.py:902:48 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cmp_eq_u32_e64 s[36:37], v145, v177
+	.loc	1 925 25                        ; triton_ragged_hstu_attention.py:925:25 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[128:143], a[96:99], a[44:47], v[128:143]
+	.loc	1 902 48                        ; triton_ragged_hstu_attention.py:902:48 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cmp_eq_u32_e64 s[30:31], v147, v184
+	v_cmp_eq_u32_e64 s[34:35], v146, v177
+	v_cmp_eq_u32_e64 s[26:27], v148, v177
+	.loc	1 915 12                        ; triton_ragged_hstu_attention.py:915:12 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_min_i32_e32 v145, s73, v145
+	v_min_i32_e32 v146, s73, v146
+	v_min_i32_e32 v147, s71, v147
+	v_min_i32_e32 v190, s73, v148
+	.loc	1 925 25                        ; triton_ragged_hstu_attention.py:925:25 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[128:143], a[100:103], a[48:51], v[128:143]
+	.loc	1 915 12                        ; triton_ragged_hstu_attention.py:915:12 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_min_i32_e32 v148, s71, v149
+	.loc	1 902 48                        ; triton_ragged_hstu_attention.py:902:48 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cmp_eq_u32_e64 s[28:29], v149, v184
+	v_cmp_eq_u32_e64 s[24:25], v151, v184
+	v_cmp_eq_u32_e64 s[22:23], v150, v177
+	v_cmp_eq_u32_e64 s[20:21], v153, v184
+	v_cmp_eq_u32_e64 s[18:19], v152, v177
+	v_cmp_eq_u32_e64 s[16:17], v155, v184
+	v_cmp_eq_u32_e64 s[10:11], v154, v177
+	v_cmp_eq_u32_e64 s[8:9], v157, v184
+	v_cmp_eq_u32_e64 s[6:7], v156, v177
+	v_cmp_eq_u32_e64 s[4:5], v159, v184
+	v_cmp_eq_u32_e64 s[2:3], v158, v177
+	.loc	1 915 12                        ; triton_ragged_hstu_attention.py:915:12 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_min_i32_e32 v191, s73, v150
+	v_min_i32_e32 v192, s71, v151
+	v_min_i32_e32 v193, s73, v152
+	.loc	1 925 25                        ; triton_ragged_hstu_attention.py:925:25 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[128:143], a[104:107], a[52:55], v[128:143]
+	.loc	1 915 12                        ; triton_ragged_hstu_attention.py:915:12 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_min_i32_e32 v194, s71, v153
+	v_min_i32_e32 v195, s73, v154
+	v_min_i32_e32 v196, s71, v155
+	v_min_i32_e32 v197, s73, v156
+	v_min_i32_e32 v198, s71, v157
+	v_min_i32_e32 v199, s73, v158
+	v_min_i32_e32 v200, s71, v159
+	.loc	1 991 60                        ; triton_ragged_hstu_attention.py:991:60 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cmp_lt_i32_e64 s[68:69], v184, v144
+	v_cmp_lt_i32_e64 s[58:59], v177, v145
+	v_cmp_lt_i32_e64 s[52:53], v184, v147
+	v_cmp_lt_i32_e64 s[48:49], v177, v146
+	v_cmp_lt_i32_e64 s[42:43], v184, v148
+	v_cmp_lt_i32_e64 s[66:67], v177, v190
+	v_cmp_lt_i32_e64 s[64:65], v184, v192
+	v_cmp_lt_i32_e64 s[62:63], v177, v191
+	v_cmp_lt_i32_e64 s[54:55], v177, v193
+	.loc	1 925 25                        ; triton_ragged_hstu_attention.py:925:25 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[128:143], a[108:111], a[56:59], v[128:143]
+	.loc	1 991 60                        ; triton_ragged_hstu_attention.py:991:60 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cmp_lt_i32_e64 s[56:57], v184, v194
+	v_cmp_lt_i32_e64 s[46:47], v184, v196
+	v_cmp_lt_i32_e64 s[50:51], v177, v195
+	v_cmp_lt_i32_e64 s[40:41], v177, v197
+	.loc	1 1008 35                       ; triton_ragged_hstu_attention.py:1008:35 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt vmcnt(1)
+	ds_write_b128 v207, v[168:171]
+	s_waitcnt vmcnt(0)
+	ds_write_b128 v207, v[172:175] offset:128
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	ds_read_b128 a[96:99], v214
+	ds_read_b128 a[100:103], v215
+	.loc	1 1008 26 is_stmt 0             ; triton_ragged_hstu_attention.py:1008:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(1)
+	v_mfma_f32_32x32x16_bf16 v[144:159], a[96:99], a[64:67], 0
+	.loc	1 1008 35                       ; triton_ragged_hstu_attention.py:1008:35 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	ds_read_b128 v[190:193], v216
+	ds_read_b128 v[194:197], v217
+	ds_read_b128 a[96:99], v218
+	.loc	1 991 60 is_stmt 1              ; triton_ragged_hstu_attention.py:991:60 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cmp_lt_i32_e64 s[44:45], v184, v198
+	.loc	1 991 38 is_stmt 0              ; triton_ragged_hstu_attention.py:991:38 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_or_b64 s[68:69], s[60:61], s[68:69]
+	.loc	1 991 60                        ; triton_ragged_hstu_attention.py:991:60 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cmp_lt_i32_e64 s[60:61], v177, v199
+	.loc	1 991 38                        ; triton_ragged_hstu_attention.py:991:38 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_or_b64 s[36:37], s[36:37], s[58:59]
+	.loc	1 1008 26 is_stmt 1             ; triton_ragged_hstu_attention.py:1008:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(3)
+	v_mfma_f32_32x32x16_bf16 v[144:159], a[100:103], a[68:71], v[144:159]
+	.loc	1 991 38                        ; triton_ragged_hstu_attention.py:991:38 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_or_b64 s[34:35], s[34:35], s[48:49]
+	s_or_b64 s[30:31], s[30:31], s[52:53]
+	s_or_b64 s[28:29], s[28:29], s[42:43]
+	s_or_b64 s[26:27], s[26:27], s[66:67]
+	s_or_b64 s[24:25], s[24:25], s[64:65]
+	s_or_b64 s[22:23], s[22:23], s[62:63]
+	s_or_b64 s[20:21], s[20:21], s[56:57]
+	.loc	1 925 25                        ; triton_ragged_hstu_attention.py:925:25 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[128:143], a[112:115], a[60:63], v[128:143]
+	.loc	1 991 38                        ; triton_ragged_hstu_attention.py:991:38 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_or_b64 s[18:19], s[18:19], s[54:55]
+	s_or_b64 s[16:17], s[16:17], s[46:47]
+	s_or_b64 s[10:11], s[10:11], s[50:51]
+	s_or_b64 s[8:9], s[8:9], s[44:45]
+	s_or_b64 s[6:7], s[6:7], s[40:41]
+	.loc	1 991 60 is_stmt 0              ; triton_ragged_hstu_attention.py:991:60 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cmp_lt_i32_e64 s[38:39], v184, v200
+	.loc	1 991 38                        ; triton_ragged_hstu_attention.py:991:38 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_or_b64 s[4:5], s[4:5], s[38:39]
+	.loc	1 1008 26 is_stmt 1             ; triton_ragged_hstu_attention.py:1008:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(2)
+	v_mfma_f32_32x32x16_bf16 v[144:159], v[190:193], a[72:75], v[144:159]
+	.loc	1 991 38                        ; triton_ragged_hstu_attention.py:991:38 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_or_b64 s[2:3], s[2:3], s[60:61]
+	.loc	1 1063 8                        ; triton_ragged_hstu_attention.py:1063:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_mov_b32 s78, s14
+	s_mov_b32 s79, s15
+.Ltmp48:
+	.loc	1 1271 39                       ; triton_ragged_hstu_attention.py:1271:39 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_add_i32 s86, s86, s82
+.Ltmp49:
+	.loc	1 925 59                        ; triton_ragged_hstu_attention.py:925:59 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v128, s92, v128
+	v_mul_f32_e64 v129, s93, v129
+	v_pk_mul_f32 v[134:135], s[92:93], v[134:135]
+	.loc	1 980 50                        ; triton_ragged_hstu_attention.py:980:50 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v190, -v128, s96
+	.loc	1 1008 26                       ; triton_ragged_hstu_attention.py:1008:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(1)
+	v_mfma_f32_32x32x16_bf16 v[144:159], v[194:197], a[76:79], v[144:159]
+	.loc	1 980 50                        ; triton_ragged_hstu_attention.py:980:50 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_exp_f32_e32 v190, v190
+	v_mul_f32_e64 v191, -v129, s96
+	.loc	1 1008 35                       ; triton_ragged_hstu_attention.py:1008:35 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	ds_read_b128 v[192:195], v219
+	ds_read_b128 v[196:199], v220
+	ds_read_b128 a[100:103], v221
+	.loc	1 1001 8                        ; triton_ragged_hstu_attention.py:1001:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(0)
+	.loc	1 980 40                        ; triton_ragged_hstu_attention.py:980:40 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e32 v190, 1.0, v190
+	.loc	1 980 34 is_stmt 0              ; triton_ragged_hstu_attention.py:980:34 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_rcp_f32_e32 v190, v190
+	.loc	1 1001 8 is_stmt 1              ; triton_ragged_hstu_attention.py:1001:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_barrier
+	.loc	1 1008 26                       ; triton_ragged_hstu_attention.py:1008:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[144:159], a[96:99], a[80:83], v[144:159]
+	.loc	1 1001 8                        ; triton_ragged_hstu_attention.py:1001:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	ds_write2st64_b64 v254, v[168:169], v[172:173] offset1:8
+	ds_write2st64_b64 v243, v[170:171], v[174:175] offset1:8
+	.loc	1 981 28                        ; triton_ragged_hstu_attention.py:981:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v168, v128, v190
+	.loc	1 980 50                        ; triton_ragged_hstu_attention.py:980:50 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_exp_f32_e32 v191, v191
+	.loc	1 981 41                        ; triton_ragged_hstu_attention.py:981:41 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v171, v182, v168
+	.loc	1 925 59                        ; triton_ragged_hstu_attention.py:925:59 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[168:169], s[92:93], v[130:131]
+	.loc	1 997 58                        ; triton_ragged_hstu_attention.py:997:58 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v173, 0, v171, s[68:69]
+	.loc	1 980 50                        ; triton_ragged_hstu_attention.py:980:50 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v131, -v169, s96
+	v_exp_f32_e32 v131, v131
+	.loc	1 980 40 is_stmt 0              ; triton_ragged_hstu_attention.py:980:40 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e32 v191, 1.0, v191
+	.loc	1 1008 26 is_stmt 1             ; triton_ragged_hstu_attention.py:1008:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[144:159], v[192:195], a[84:87], v[144:159]
+	.loc	1 980 34                        ; triton_ragged_hstu_attention.py:980:34 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_rcp_f32_e32 v191, v191
+	.loc	1 980 50 is_stmt 0              ; triton_ragged_hstu_attention.py:980:50 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v130, -v168, s96
+	v_exp_f32_e32 v130, v130
+	.loc	1 980 40                        ; triton_ragged_hstu_attention.py:980:40 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e32 v131, 1.0, v131
+	.loc	1 980 34                        ; triton_ragged_hstu_attention.py:980:34 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_rcp_f32_e32 v171, v131
+	.loc	1 981 28 is_stmt 1              ; triton_ragged_hstu_attention.py:981:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v170, v129, v191
+	.loc	1 981 41 is_stmt 0              ; triton_ragged_hstu_attention.py:981:41 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v172, v182, v170
+	.loc	1 980 40 is_stmt 1              ; triton_ragged_hstu_attention.py:980:40 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e32 v130, 1.0, v130
+	.loc	1 980 34 is_stmt 0              ; triton_ragged_hstu_attention.py:980:34 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_rcp_f32_e32 v170, v130
+	.loc	1 997 58 is_stmt 1              ; triton_ragged_hstu_attention.py:997:58 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v130, 0, v172, s[36:37]
+	.loc	1 981 28                        ; triton_ragged_hstu_attention.py:981:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v172, v169, v171
+	.loc	1 1008 26                       ; triton_ragged_hstu_attention.py:1008:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[144:159], v[196:199], a[88:91], v[144:159]
+	.loc	1 998 31                        ; triton_ragged_hstu_attention.py:998:31 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cvt_pk_bf16_f32 v130, v173, v130
+	.loc	1 981 41                        ; triton_ragged_hstu_attention.py:981:41 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v192, v182, v172
+	.loc	1 925 59                        ; triton_ragged_hstu_attention.py:925:59 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v172, s92, v132
+	v_mul_f32_e64 v173, s93, v133
+	.loc	1 980 50                        ; triton_ragged_hstu_attention.py:980:50 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v193, -v135, s96
+	v_mul_f32_e64 v132, -v172, s96
+	v_exp_f32_e32 v132, v132
+	v_mul_f32_e64 v133, -v173, s96
+	v_exp_f32_e32 v133, v133
+	.loc	1 1008 26                       ; triton_ragged_hstu_attention.py:1008:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[144:159], a[100:103], a[92:95], v[144:159]
+	.loc	1 980 40                        ; triton_ragged_hstu_attention.py:980:40 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e32 v132, 1.0, v132
+	.loc	1 980 34 is_stmt 0              ; triton_ragged_hstu_attention.py:980:34 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_rcp_f32_e32 v174, v132
+	.loc	1 997 58 is_stmt 1              ; triton_ragged_hstu_attention.py:997:58 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v132, 0, v192, s[34:35]
+	.loc	1 980 50                        ; triton_ragged_hstu_attention.py:980:50 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v192, -v134, s96
+	v_exp_f32_e32 v192, v192
+	v_exp_f32_e32 v193, v193
+	.loc	1 980 40 is_stmt 0              ; triton_ragged_hstu_attention.py:980:40 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e32 v133, 1.0, v133
+	.loc	1 980 34                        ; triton_ragged_hstu_attention.py:980:34 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_rcp_f32_e32 v175, v133
+	.loc	1 981 28 is_stmt 1              ; triton_ragged_hstu_attention.py:981:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v131, v168, v170
+	.loc	1 981 41 is_stmt 0              ; triton_ragged_hstu_attention.py:981:41 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v131, v182, v131
+	.loc	1 980 40 is_stmt 1              ; triton_ragged_hstu_attention.py:980:40 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e32 v192, 1.0, v192
+	v_add_f32_e32 v193, 1.0, v193
+	.loc	1 997 58                        ; triton_ragged_hstu_attention.py:997:58 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v131, 0, v131, s[30:31]
+	.loc	1 980 34                        ; triton_ragged_hstu_attention.py:980:34 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_rcp_f32_e32 v192, v192
+	v_rcp_f32_e32 v193, v193
+	.loc	1 998 31                        ; triton_ragged_hstu_attention.py:998:31 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cvt_pk_bf16_f32 v131, v131, v132
+	.loc	1 981 28                        ; triton_ragged_hstu_attention.py:981:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v132, v172, v174
+	v_mul_f32_e32 v133, v173, v175
+	.loc	1 981 41 is_stmt 0              ; triton_ragged_hstu_attention.py:981:41 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v132, v182, v132
+	v_mul_f32_e32 v133, v182, v133
+	.loc	1 1001 8 is_stmt 1              ; triton_ragged_hstu_attention.py:1001:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	ds_read_b64_tr_b16 a[98:99], v222 offset:2112
+	ds_read_b64_tr_b16 a[106:107], v222 offset:2240
+	ds_read_b64_tr_b16 a[110:111], v222 offset:2176
+	ds_read_b64_tr_b16 a[114:115], v222 offset:2048
+	ds_read_b64_tr_b16 a[118:119], v222 offset:6208
+	ds_read_b64_tr_b16 a[122:123], v222 offset:6336
+	ds_read_b64_tr_b16 a[126:127], v222 offset:6272
+	ds_read_b64_tr_b16 a[130:131], v222 offset:6144
+	ds_read_b64_tr_b16 a[96:97], v222
+	.loc	1 997 58                        ; triton_ragged_hstu_attention.py:997:58 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v132, 0, v132, s[28:29]
+	v_cndmask_b32_e64 v133, 0, v133, s[26:27]
+	.loc	1 1010 20                       ; triton_ragged_hstu_attention.py:1010:20 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[144:145], v[190:191], v[144:145]
+	.loc	1 1010 53 is_stmt 0             ; triton_ragged_hstu_attention.py:1010:53 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_add_f32 v[190:191], v[190:191], 1.0 op_sel_hi:[1,0] neg_lo:[1,0] neg_hi:[1,0]
+	.loc	1 998 31 is_stmt 1              ; triton_ragged_hstu_attention.py:998:31 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cvt_pk_bf16_f32 v132, v132, v133
+	.loc	1 981 28                        ; triton_ragged_hstu_attention.py:981:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v133, v134, v192
+	v_mul_f32_e32 v194, v135, v193
+	.loc	1 1010 37                       ; triton_ragged_hstu_attention.py:1010:37 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_fma_f32 v[128:129], v[128:129], v[190:191], 1.0 op_sel_hi:[1,1,0]
+	.loc	1 981 41                        ; triton_ragged_hstu_attention.py:981:41 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v133, v182, v133
+	v_mul_f32_e32 v194, v182, v194
+	.loc	1 1010 33                       ; triton_ragged_hstu_attention.py:1010:33 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[128:129], v[128:129], v[144:145]
+	.loc	1 997 58                        ; triton_ragged_hstu_attention.py:997:58 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v133, 0, v133, s[24:25]
+	v_cndmask_b32_e64 v194, 0, v194, s[22:23]
+	.loc	1 1010 68                       ; triton_ragged_hstu_attention.py:1010:68 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[128:129], v[182:183], v[128:129]
+	.loc	1 1010 53 is_stmt 0             ; triton_ragged_hstu_attention.py:1010:53 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_add_f32 v[144:145], v[170:171], 1.0 op_sel_hi:[1,0] neg_lo:[1,0] neg_hi:[1,0]
+	.loc	1 1001 8 is_stmt 1              ; triton_ragged_hstu_attention.py:1001:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	ds_read_b64_tr_b16 a[112:113], v222 offset:64
+	ds_read_b64_tr_b16 a[104:105], v222 offset:128
+	ds_read_b64_tr_b16 a[108:109], v222 offset:192
+	ds_read_b64_tr_b16 a[116:117], v222 offset:4096
+	ds_read_b64_tr_b16 a[128:129], v222 offset:4160
+	ds_read_b64_tr_b16 a[120:121], v222 offset:4224
+	ds_read_b64_tr_b16 a[124:125], v222 offset:4288
+	.loc	1 998 31                        ; triton_ragged_hstu_attention.py:998:31 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cvt_pk_bf16_f32 v133, v133, v194
+	.loc	1 1012 56                       ; triton_ragged_hstu_attention.py:1012:56 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v190, 0, v129, s[36:37]
+	v_cndmask_b32_e64 v191, 0, v128, s[68:69]
+	.loc	1 1010 20                       ; triton_ragged_hstu_attention.py:1010:20 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[128:129], v[170:171], v[146:147]
+	.loc	1 1010 37 is_stmt 0             ; triton_ragged_hstu_attention.py:1010:37 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_fma_f32 v[144:145], v[168:169], v[144:145], 1.0 op_sel_hi:[1,1,0]
+	.loc	1 1005 29 is_stmt 1             ; triton_ragged_hstu_attention.py:1005:29 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(7)
+	v_mfma_f32_32x32x16_bf16 v[32:47], a[96:99], v[130:133], v[32:47]
+	.loc	1 1010 33                       ; triton_ragged_hstu_attention.py:1010:33 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v128, v144, v128
+	v_mul_f32_e64 v129, v145, v129
+	.loc	1 1010 53 is_stmt 0             ; triton_ragged_hstu_attention.py:1010:53 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e64 v144, -v174, 1.0
+	v_add_f32_e64 v145, -v175, 1.0
+	.loc	1 1010 68                       ; triton_ragged_hstu_attention.py:1010:68 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v128, v182, v128
+	v_mul_f32_e64 v129, v183, v129
+	.loc	1 1010 37                       ; triton_ragged_hstu_attention.py:1010:37 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_fma_f32 v[144:145], v[172:173], v[144:145], 1.0 op_sel_hi:[1,1,0]
+	.loc	1 1012 56 is_stmt 1             ; triton_ragged_hstu_attention.py:1012:56 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v168, 0, v129, s[34:35]
+	v_cndmask_b32_e64 v169, 0, v128, s[30:31]
+	.loc	1 1010 20                       ; triton_ragged_hstu_attention.py:1010:20 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[128:129], v[174:175], v[148:149]
+	.loc	1 1005 29                       ; triton_ragged_hstu_attention.py:1005:29 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(6)
+	v_mfma_f32_32x32x16_bf16 v[64:79], a[112:115], v[130:133], v[64:79]
+	.loc	1 1010 33                       ; triton_ragged_hstu_attention.py:1010:33 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v128, v144, v128
+	v_mul_f32_e64 v129, v145, v129
+	.loc	1 925 59                        ; triton_ragged_hstu_attention.py:925:59 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v140, s92, v140
+	v_mul_f32_e64 v141, s93, v141
+	.loc	1 1010 68                       ; triton_ragged_hstu_attention.py:1010:68 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v128, v182, v128
+	v_mul_f32_e64 v129, v183, v129
+	.loc	1 980 50                        ; triton_ragged_hstu_attention.py:980:50 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v144, -v141, s96
+	.loc	1 1012 56                       ; triton_ragged_hstu_attention.py:1012:56 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v170, 0, v129, s[26:27]
+	v_cndmask_b32_e64 v171, 0, v128, s[28:29]
+	.loc	1 1010 20                       ; triton_ragged_hstu_attention.py:1010:20 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[128:129], v[192:193], v[150:151]
+	.loc	1 1005 29                       ; triton_ragged_hstu_attention.py:1005:29 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(5)
+	v_mfma_f32_32x32x16_bf16 v[96:111], a[104:107], v[130:133], v[96:111]
+	.loc	1 980 50                        ; triton_ragged_hstu_attention.py:980:50 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_exp_f32_e32 v144, v144
+	.loc	1 925 59                        ; triton_ragged_hstu_attention.py:925:59 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[142:143], s[92:93], v[142:143]
+	.loc	1 918 8                         ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(0)
+	.loc	1 980 50                        ; triton_ragged_hstu_attention.py:980:50 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v146, -v142, s96
+	v_mul_f32_e64 v147, -v143, s96
+	v_exp_f32_e32 v146, v146
+	v_exp_f32_e32 v147, v147
+	.loc	1 1005 29                       ; triton_ragged_hstu_attention.py:1005:29 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[112:127], a[108:111], v[130:133], v[112:127]
+	.loc	1 1010 53                       ; triton_ragged_hstu_attention.py:1010:53 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e64 v130, -v192, 1.0
+	v_add_f32_e64 v131, -v193, 1.0
+	.loc	1 925 59                        ; triton_ragged_hstu_attention.py:925:59 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v132, s92, v136
+	v_mul_f32_e64 v133, s93, v137
+	.loc	1 1010 37                       ; triton_ragged_hstu_attention.py:1010:37 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_fma_f32 v130, v134, v130, 1.0
+	v_fma_f32 v131, v135, v131, 1.0
+	.loc	1 980 50                        ; triton_ragged_hstu_attention.py:980:50 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v135, -v133, s96
+	v_exp_f32_e32 v135, v135
+	v_mul_f32_e64 v134, -v132, s96
+	v_exp_f32_e32 v134, v134
+	.loc	1 1010 33                       ; triton_ragged_hstu_attention.py:1010:33 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[128:129], v[130:131], v[128:129]
+	.loc	1 980 40                        ; triton_ragged_hstu_attention.py:980:40 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e32 v131, 1.0, v135
+	.loc	1 925 59                        ; triton_ragged_hstu_attention.py:925:59 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[136:137], s[92:93], v[138:139]
+	.loc	1 980 34                        ; triton_ragged_hstu_attention.py:980:34 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_rcp_f32_e32 v135, v131
+	.loc	1 980 50 is_stmt 0              ; triton_ragged_hstu_attention.py:980:50 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v131, -v137, s96
+	v_exp_f32_e32 v131, v131
+	.loc	1 980 40                        ; triton_ragged_hstu_attention.py:980:40 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e32 v130, 1.0, v134
+	.loc	1 980 34                        ; triton_ragged_hstu_attention.py:980:34 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_rcp_f32_e32 v134, v130
+	.loc	1 980 50                        ; triton_ragged_hstu_attention.py:980:50 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v130, -v136, s96
+	v_exp_f32_e32 v130, v130
+	.loc	1 980 40                        ; triton_ragged_hstu_attention.py:980:40 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e32 v131, 1.0, v131
+	.loc	1 980 34                        ; triton_ragged_hstu_attention.py:980:34 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_rcp_f32_e32 v139, v131
+	.loc	1 980 50                        ; triton_ragged_hstu_attention.py:980:50 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v131, -v140, s96
+	v_exp_f32_e32 v131, v131
+	.loc	1 980 40                        ; triton_ragged_hstu_attention.py:980:40 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e32 v130, 1.0, v130
+	.loc	1 1010 68 is_stmt 1             ; triton_ragged_hstu_attention.py:1010:68 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[128:129], v[182:183], v[128:129]
+	.loc	1 980 34                        ; triton_ragged_hstu_attention.py:980:34 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_rcp_f32_e32 v138, v130
+	.loc	1 1012 56                       ; triton_ragged_hstu_attention.py:1012:56 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v172, 0, v129, s[22:23]
+	v_cndmask_b32_e64 v150, 0, v128, s[24:25]
+	.loc	1 981 28                        ; triton_ragged_hstu_attention.py:981:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v128, v132, v134
+	v_mul_f32_e32 v129, v133, v135
+	.loc	1 981 41 is_stmt 0              ; triton_ragged_hstu_attention.py:981:41 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v128, v182, v128
+	v_mul_f32_e32 v129, v182, v129
+	.loc	1 980 40 is_stmt 1              ; triton_ragged_hstu_attention.py:980:40 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e32 v131, 1.0, v131
+	v_add_f32_e32 v145, 1.0, v144
+	.loc	1 997 58                        ; triton_ragged_hstu_attention.py:997:58 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v128, 0, v128, s[20:21]
+	v_cndmask_b32_e64 v129, 0, v129, s[18:19]
+	.loc	1 980 34                        ; triton_ragged_hstu_attention.py:980:34 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_rcp_f32_e32 v144, v131
+	v_rcp_f32_e32 v145, v145
+	.loc	1 998 31                        ; triton_ragged_hstu_attention.py:998:31 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cvt_pk_bf16_f32 v128, v128, v129
+	.loc	1 981 28                        ; triton_ragged_hstu_attention.py:981:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v129, v136, v138
+	v_mul_f32_e32 v130, v137, v139
+	.loc	1 981 41 is_stmt 0              ; triton_ragged_hstu_attention.py:981:41 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v129, v182, v129
+	v_mul_f32_e32 v130, v182, v130
+	.loc	1 980 40 is_stmt 1              ; triton_ragged_hstu_attention.py:980:40 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e32 v146, 1.0, v146
+	v_add_f32_e32 v147, 1.0, v147
+	.loc	1 997 58                        ; triton_ragged_hstu_attention.py:997:58 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v129, 0, v129, s[16:17]
+	v_cndmask_b32_e64 v130, 0, v130, s[10:11]
+	.loc	1 980 34                        ; triton_ragged_hstu_attention.py:980:34 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_rcp_f32_e32 v146, v146
+	v_rcp_f32_e32 v147, v147
+	.loc	1 998 31                        ; triton_ragged_hstu_attention.py:998:31 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cvt_pk_bf16_f32 v129, v129, v130
+	.loc	1 981 28                        ; triton_ragged_hstu_attention.py:981:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v130, v140, v144
+	v_mul_f32_e32 v131, v141, v145
+	.loc	1 981 41 is_stmt 0              ; triton_ragged_hstu_attention.py:981:41 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v130, v182, v130
+	v_mul_f32_e32 v131, v182, v131
+	.loc	1 997 58 is_stmt 1              ; triton_ragged_hstu_attention.py:997:58 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v130, 0, v130, s[8:9]
+	v_cndmask_b32_e64 v131, 0, v131, s[6:7]
+	.loc	1 998 31                        ; triton_ragged_hstu_attention.py:998:31 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cvt_pk_bf16_f32 v130, v130, v131
+	.loc	1 981 28                        ; triton_ragged_hstu_attention.py:981:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v131, v142, v146
+	v_mul_f32_e32 v148, v143, v147
+	.loc	1 981 41 is_stmt 0              ; triton_ragged_hstu_attention.py:981:41 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e32 v131, v182, v131
+	v_mul_f32_e32 v148, v182, v148
+	.loc	1 997 58 is_stmt 1              ; triton_ragged_hstu_attention.py:997:58 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v131, 0, v131, s[4:5]
+	v_cndmask_b32_e64 v148, 0, v148, s[2:3]
+	.loc	1 998 31                        ; triton_ragged_hstu_attention.py:998:31 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cvt_pk_bf16_f32 v131, v131, v148
+	.loc	1 1010 20                       ; triton_ragged_hstu_attention.py:1010:20 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[148:149], v[134:135], v[152:153]
+	.loc	1 1010 53 is_stmt 0             ; triton_ragged_hstu_attention.py:1010:53 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_add_f32 v[134:135], v[134:135], 1.0 op_sel_hi:[1,0] neg_lo:[1,0] neg_hi:[1,0]
+	.loc	1 1005 29 is_stmt 1             ; triton_ragged_hstu_attention.py:1005:29 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[32:47], a[116:119], v[128:131], v[32:47]
+	.loc	1 1010 37                       ; triton_ragged_hstu_attention.py:1010:37 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_fma_f32 v132, v132, v134, 1.0
+	v_fma_f32 v133, v133, v135, 1.0
+	.loc	1 1010 53 is_stmt 0             ; triton_ragged_hstu_attention.py:1010:53 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e64 v134, -v138, 1.0
+	v_add_f32_e64 v135, -v139, 1.0
+	.loc	1 1010 33                       ; triton_ragged_hstu_attention.py:1010:33 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v132, v132, v148
+	v_mul_f32_e64 v133, v133, v149
+	.loc	1 1010 37                       ; triton_ragged_hstu_attention.py:1010:37 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_fma_f32 v[134:135], v[136:137], v[134:135], 1.0 op_sel_hi:[1,1,0]
+	.loc	1 1010 68                       ; triton_ragged_hstu_attention.py:1010:68 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[132:133], v[182:183], v[132:133]
+	.loc	1 918 8 is_stmt 1               ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_barrier
+	.loc	1 1012 56                       ; triton_ragged_hstu_attention.py:1012:56 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v152, 0, v133, s[18:19]
+	v_cndmask_b32_e64 v148, 0, v132, s[20:21]
+	.loc	1 1010 20                       ; triton_ragged_hstu_attention.py:1010:20 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[132:133], v[138:139], v[154:155]
+	.loc	1 1005 29                       ; triton_ragged_hstu_attention.py:1005:29 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[64:79], a[128:131], v[128:131], v[64:79]
+	.loc	1 1010 33                       ; triton_ragged_hstu_attention.py:1010:33 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v132, v134, v132
+	v_mul_f32_e64 v133, v135, v133
+	.loc	1 1010 53 is_stmt 0             ; triton_ragged_hstu_attention.py:1010:53 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e64 v134, -v144, 1.0
+	v_add_f32_e64 v135, -v145, 1.0
+	.loc	1 1010 68                       ; triton_ragged_hstu_attention.py:1010:68 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v132, v182, v132
+	v_mul_f32_e64 v133, v183, v133
+	.loc	1 1010 37                       ; triton_ragged_hstu_attention.py:1010:37 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_fma_f32 v[134:135], v[140:141], v[134:135], 1.0 op_sel_hi:[1,1,0]
+	.loc	1 918 8 is_stmt 1               ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	ds_write2st64_b64 v254, v[160:161], v[164:165] offset1:8
+	ds_write2st64_b64 v243, v[162:163], v[166:167] offset1:8
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	.loc	1 1005 29                       ; triton_ragged_hstu_attention.py:1005:29 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[96:111], a[120:123], v[128:131], v[96:111]
+	.loc	1 1012 56                       ; triton_ragged_hstu_attention.py:1012:56 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v136, 0, v133, s[10:11]
+	v_cndmask_b32_e64 v137, 0, v132, s[16:17]
+	.loc	1 1010 20                       ; triton_ragged_hstu_attention.py:1010:20 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v132, v144, v156
+	v_mul_f32_e64 v133, v145, v157
+.Ltmp50:
+	.loc	1 1271 39                       ; triton_ragged_hstu_attention.py:1271:39 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_add_i32 s74, s74, s80
+.Ltmp51:
+	.loc	1 1010 33                       ; triton_ragged_hstu_attention.py:1010:33 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[132:133], v[134:135], v[132:133]
+	.loc	1 1010 68 is_stmt 0             ; triton_ragged_hstu_attention.py:1010:68 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_nop 0
+	v_pk_mul_f32 v[132:133], v[182:183], v[132:133]
+	.loc	1 1005 29 is_stmt 1             ; triton_ragged_hstu_attention.py:1005:29 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[112:127], a[124:127], v[128:131], v[112:127]
+	.loc	1 1010 53                       ; triton_ragged_hstu_attention.py:1010:53 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_f32_e64 v130, -v146, 1.0
+	v_add_f32_e64 v131, -v147, 1.0
+	.loc	1 1010 20 is_stmt 0             ; triton_ragged_hstu_attention.py:1010:20 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mul_f32_e64 v128, v146, v158
+	v_mul_f32_e64 v129, v147, v159
+	.loc	1 1010 37                       ; triton_ragged_hstu_attention.py:1010:37 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_fma_f32 v130, v142, v130, 1.0
+	v_fma_f32 v131, v143, v131, 1.0
+	.loc	1 918 8 is_stmt 1               ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	ds_read_b64_tr_b16 v[140:141], v222
+	ds_read_b64_tr_b16 v[142:143], v222 offset:2112
+	.loc	1 1010 33                       ; triton_ragged_hstu_attention.py:1010:33 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[128:129], v[130:131], v[128:129]
+	.loc	1 1012 56                       ; triton_ragged_hstu_attention.py:1012:56 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v138, 0, v133, s[6:7]
+	v_cndmask_b32_e64 v134, 0, v132, s[8:9]
+	.loc	1 1010 68                       ; triton_ragged_hstu_attention.py:1010:68 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_mul_f32 v[132:133], v[182:183], v[128:129]
+	.loc	1 1038 29                       ; triton_ragged_hstu_attention.py:1038:29 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cvt_pk_bf16_f32 v128, v191, v190
+	v_cvt_pk_bf16_f32 v129, v169, v168
+	v_cvt_pk_bf16_f32 v130, v171, v170
+	v_cvt_pk_bf16_f32 v131, v150, v172
+	.loc	1 918 8                         ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	ds_read_b64_tr_b16 v[144:145], v222 offset:4096
+	ds_read_b64_tr_b16 v[146:147], v222 offset:6208
+	.loc	1 1039 28                       ; triton_ragged_hstu_attention.py:1039:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(2)
+	v_mfma_f32_32x32x16_bf16 v[80:95], v[140:143], v[128:131], v[80:95]
+	.loc	1 918 8                         ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	ds_read_b64_tr_b16 v[142:143], v222 offset:2048
+	.loc	1 1012 56                       ; triton_ragged_hstu_attention.py:1012:56 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e64 v139, 0, v133, s[2:3]
+	v_cndmask_b32_e64 v135, 0, v132, s[4:5]
+	.loc	1 1038 29                       ; triton_ragged_hstu_attention.py:1038:29 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cvt_pk_bf16_f32 v132, v148, v152
+	v_cvt_pk_bf16_f32 v133, v137, v136
+	v_cvt_pk_bf16_f32 v134, v134, v138
+	v_cvt_pk_bf16_f32 v135, v135, v139
+	.loc	1 1063 8                        ; triton_ragged_hstu_attention.py:1063:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_u32_e32 v137, s87, v209
+	v_cndmask_b32_e32 v137, v253, v137, vcc
+	.loc	1 1039 28                       ; triton_ragged_hstu_attention.py:1039:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(1)
+	v_mfma_f32_32x32x16_bf16 v[80:95], v[144:147], v[132:135], v[80:95]
+	.loc	1 918 8                         ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	ds_read_b64_tr_b16 v[140:141], v222 offset:64
+	ds_read_b64_tr_b16 v[144:145], v222 offset:6144
+	.loc	1 1039 28                       ; triton_ragged_hstu_attention.py:1039:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(1)
+	v_mfma_f32_32x32x16_bf16 v[48:63], v[140:143], v[128:131], v[48:63]
+	.loc	1 918 8                         ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	ds_read_b64_tr_b16 v[142:143], v222 offset:4160
+	ds_read_b64_tr_b16 v[140:141], v222 offset:128
+	.loc	1 1039 28                       ; triton_ragged_hstu_attention.py:1039:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(1)
+	v_mfma_f32_32x32x16_bf16 v[48:63], v[142:145], v[132:135], v[48:63]
+	.loc	1 918 8                         ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	ds_read_b64_tr_b16 v[142:143], v222 offset:2240
+	ds_read_b64_tr_b16 v[144:145], v222 offset:4224
+	.loc	1 1039 28                       ; triton_ragged_hstu_attention.py:1039:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(1)
+	v_mfma_f32_32x32x16_bf16 v[16:31], v[140:143], v[128:131], v[16:31]
+	.loc	1 918 8                         ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	ds_read_b64_tr_b16 v[146:147], v222 offset:6336
+	ds_read_b64_tr_b16 v[142:143], v222 offset:2176
+	.loc	1 1039 28                       ; triton_ragged_hstu_attention.py:1039:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(1)
+	v_mfma_f32_32x32x16_bf16 v[16:31], v[144:147], v[132:135], v[16:31]
+	.loc	1 918 8                         ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	ds_read_b64_tr_b16 v[140:141], v222 offset:192
+	ds_read_b64_tr_b16 v[144:145], v222 offset:6272
+	.loc	1 1039 28                       ; triton_ragged_hstu_attention.py:1039:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(1)
+	v_mfma_f32_32x32x16_bf16 v[0:15], v[140:143], v[128:131], v[0:15]
+	.loc	1 918 8                         ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	ds_read_b64_tr_b16 v[142:143], v222 offset:4288
+	.loc	1 1063 8                        ; triton_ragged_hstu_attention.py:1063:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_u32_e32 v140, s87, v208
+	v_cndmask_b32_e64 v140, v253, v140, s[0:1]
+	.loc	1 1039 28                       ; triton_ragged_hstu_attention.py:1039:28 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(0)
+	v_mfma_f32_32x32x16_bf16 v[0:15], v[142:145], v[132:135], v[0:15]
+	.loc	1 1063 8                        ; triton_ragged_hstu_attention.py:1063:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	buffer_load_dwordx4 v[144:147], v137, s[76:79], 0 offen
+	buffer_load_dwordx4 v[148:151], v140, s[76:79], 0 offen
+	.loc	1 1068 38                       ; triton_ragged_hstu_attention.py:1068:38 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	ds_write_b16 v223, v128
+	ds_write_b16 v223, v132 offset:4096
+	v_cvt_pk_bf16_f32 v128, v190, s0
+	ds_write_b16 v224, v128 offset:256
+	v_cvt_pk_bf16_f32 v128, v152, s0
+	ds_write_b16 v224, v128 offset:4352
+	ds_write_b16 v225, v129 offset:512
+	ds_write_b16 v225, v133 offset:4608
+	v_cvt_pk_bf16_f32 v128, v168, s0
+	ds_write_b16 v226, v128 offset:768
+	v_cvt_pk_bf16_f32 v128, v136, s0
+	ds_write_b16 v226, v128 offset:4864
+	ds_write_b16 v227, v130 offset:2048
+	ds_write_b16 v227, v134 offset:6144
+	v_cvt_pk_bf16_f32 v128, v170, s0
+	ds_write_b16 v228, v128 offset:2304
+	v_cvt_pk_bf16_f32 v128, v138, s0
+	ds_write_b16 v228, v128 offset:6400
+	ds_write_b16 v229, v131 offset:2560
+	ds_write_b16 v229, v135 offset:6656
+	v_cvt_pk_bf16_f32 v128, v172, s0
+	ds_write_b16 v230, v128 offset:2816
+	v_cvt_pk_bf16_f32 v128, v139, s0
+	ds_write_b16 v230, v128 offset:6912
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	ds_read2_b64 v[152:155], v231 offset1:16
+	ds_read2_b64 v[158:161], v232 offset1:16
+	s_waitcnt lgkmcnt(1)
+	v_mov_b32_e32 v156, v152
+	v_mov_b32_e32 v157, v153
+	s_waitcnt lgkmcnt(0)
+	s_nop 0
+	v_mfma_f32_32x32x16_bf16 v[128:143], a[0:3], v[156:159], 0
+	ds_read2_b64 v[156:159], v233 offset1:16
+	ds_read2_b64 v[164:167], v234 offset1:16
+	s_waitcnt lgkmcnt(1)
+	v_mov_b32_e32 v162, v156
+	v_mov_b32_e32 v163, v157
+	v_mov_b32_e32 v156, v160
+	v_mov_b32_e32 v157, v161
+	s_waitcnt lgkmcnt(0)
+	v_mfma_f32_32x32x16_bf16 v[128:143], a[4:7], v[162:165], v[128:143]
+	ds_read2_b64 v[162:165], v235 offset1:16
+	ds_read2_b64 v[170:173], v236 offset1:16
+	v_mov_b32_e32 v160, v166
+	v_mov_b32_e32 v161, v167
+	s_waitcnt lgkmcnt(1)
+	v_mov_b32_e32 v168, v162
+	v_mov_b32_e32 v169, v163
+	s_waitcnt lgkmcnt(0)
+	v_mov_b32_e32 v166, v172
+	v_mov_b32_e32 v167, v173
+	v_mfma_f32_32x32x16_bf16 v[128:143], a[8:11], v[168:171], v[128:143]
+	ds_read2_b64 v[168:171], v237 offset1:16
+	ds_read2_b64 v[192:195], v238 offset1:16
+	.loc	1 1068 10 is_stmt 0             ; triton_ragged_hstu_attention.py:1068:10 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	s_waitcnt vmcnt(1)
+	ds_write2_b64 v239, v[144:145], v[146:147] offset1:16
+	s_waitcnt vmcnt(0)
+	ds_write2_b64 v240, v[148:149], v[150:151] offset1:16
+	.loc	1 1068 38                       ; triton_ragged_hstu_attention.py:1068:38 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mov_b32_e32 v190, v168
+	v_mov_b32_e32 v191, v169
+	v_mov_b32_e32 v172, v194
+	v_mov_b32_e32 v173, v195
+	v_mfma_f32_32x32x16_bf16 v[128:143], a[12:15], v[190:193], v[128:143]
+	.loc	1 1068 10                       ; triton_ragged_hstu_attention.py:1068:10 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_waitcnt lgkmcnt(0)
+	s_barrier
+	ds_read2st64_b64 v[144:147], v241 offset1:4
+	ds_read2st64_b64 v[148:151], v242 offset1:4
+	s_waitcnt lgkmcnt(1)
+	v_and_b32_e32 v153, 0xffff0000, v144
+	.loc	1 1068 38                       ; triton_ragged_hstu_attention.py:1068:38 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[128:143], a[16:19], v[154:157], v[128:143]
+	.loc	1 1068 10                       ; triton_ragged_hstu_attention.py:1068:10 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_lshlrev_b32_e32 v152, 16, v144
+	v_lshlrev_b32_e32 v144, 16, v146
+	.loc	1 900 26 is_stmt 1              ; triton_ragged_hstu_attention.py:900:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_u32_e32 v154, s90, v186
+	.loc	1 901 26                        ; triton_ragged_hstu_attention.py:901:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cmp_gt_i32_e32 vcc, s33, v154
+.Ltmp52:
+	.loc	1 1271 39                       ; triton_ragged_hstu_attention.py:1271:39 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_add_i32 s90, s90, 32
+.Ltmp53:
+	.loc	1 1068 38                       ; triton_ragged_hstu_attention.py:1068:38 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mfma_f32_32x32x16_bf16 v[128:143], a[20:23], v[158:161], v[128:143]
+	v_mfma_f32_32x32x16_bf16 v[128:143], a[24:27], v[164:167], v[128:143]
+	v_mfma_f32_32x32x16_bf16 v[128:143], a[28:31], v[170:173], v[128:143]
+	.loc	1 1068 10 is_stmt 0             ; triton_ragged_hstu_attention.py:1068:10 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_nop 11
+	v_pk_fma_f32 v[128:129], s[92:93], v[128:129], v[152:153]
+	v_and_b32_e32 v153, 0xffff0000, v145
+	v_lshlrev_b32_e32 v152, 16, v145
+	v_and_b32_e32 v145, 0xffff0000, v146
+	v_pk_fma_f32 v[132:133], s[92:93], v[132:133], v[144:145]
+	v_and_b32_e32 v145, 0xffff0000, v147
+	v_lshlrev_b32_e32 v144, 16, v147
+	v_pk_fma_f32 v[134:135], s[92:93], v[134:135], v[144:145]
+	s_waitcnt lgkmcnt(0)
+	v_and_b32_e32 v145, 0xffff0000, v148
+	v_lshlrev_b32_e32 v144, 16, v148
+	v_pk_fma_f32 v[136:137], s[92:93], v[136:137], v[144:145]
+	v_and_b32_e32 v145, 0xffff0000, v149
+	v_lshlrev_b32_e32 v144, 16, v149
+	v_pk_fma_f32 v[130:131], s[92:93], v[130:131], v[152:153]
+	v_pk_fma_f32 v[138:139], s[92:93], v[138:139], v[144:145]
+	v_and_b32_e32 v145, 0xffff0000, v150
+	v_lshlrev_b32_e32 v144, 16, v150
+	v_pk_fma_f32 v[140:141], s[92:93], v[140:141], v[144:145]
+	v_and_b32_e32 v145, 0xffff0000, v151
+	v_lshlrev_b32_e32 v144, 16, v151
+	.loc	1 1069 15 is_stmt 1             ; triton_ragged_hstu_attention.py:1069:15 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cvt_pk_bf16_f32 v128, v128, v129
+	v_cvt_pk_bf16_f32 v129, v130, v131
+	v_cvt_pk_bf16_f32 v130, v132, v133
+	v_cvt_pk_bf16_f32 v131, v134, v135
+	v_cvt_pk_bf16_f32 v132, v136, v137
+	.loc	1 1072 8                        ; triton_ragged_hstu_attention.py:1072:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_u32_e32 v136, s87, v206
+	.loc	1 1068 10                       ; triton_ragged_hstu_attention.py:1068:10 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_pk_fma_f32 v[142:143], s[92:93], v[142:143], v[144:145]
+	.loc	1 1069 15                       ; triton_ragged_hstu_attention.py:1069:15 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_permlane32_swap_b32_e32 v128, v130
+	v_permlane32_swap_b32_e32 v129, v131
+	.loc	1 1072 8                        ; triton_ragged_hstu_attention.py:1072:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e32 v137, v253, v136, vcc
+	.loc	1 1069 15                       ; triton_ragged_hstu_attention.py:1069:15 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cvt_pk_bf16_f32 v133, v138, v139
+	v_cvt_pk_bf16_f32 v134, v140, v141
+	v_cvt_pk_bf16_f32 v135, v142, v143
+	.loc	1 1072 8                        ; triton_ragged_hstu_attention.py:1072:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	buffer_store_dwordx4 v[128:131], v137, s[76:79], 0 offen
+.Ltmp54:
+	.loc	1 1271 39                       ; triton_ragged_hstu_attention.py:1271:39 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_add_i32 s87, s87, s83
+.Ltmp55:
+	.loc	1 1069 15                       ; triton_ragged_hstu_attention.py:1069:15 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_permlane32_swap_b32_e32 v132, v134
+	.loc	1 1072 8                        ; triton_ragged_hstu_attention.py:1072:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_u32_e32 v128, 32, v136
+	.loc	1 1069 15                       ; triton_ragged_hstu_attention.py:1069:15 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_permlane32_swap_b32_e32 v133, v135
+	.loc	1 1072 8                        ; triton_ragged_hstu_attention.py:1072:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cndmask_b32_e32 v128, v253, v128, vcc
+.Ltmp56:
+	.loc	1 1271 39                       ; triton_ragged_hstu_attention.py:1271:39 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_cmp_lt_i32 s90, s33
+.Ltmp57:
+	.loc	1 1072 8                        ; triton_ragged_hstu_attention.py:1072:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	buffer_store_dwordx4 v[132:135], v128, s[76:79], 0 offen
+.Ltmp58:
+	.loc	1 1271 39                       ; triton_ragged_hstu_attention.py:1271:39 @[ triton_ragged_hstu_attention.py:1822:16 ]
+	s_cbranch_scc0 .LBB0_2
+.LBB0_37:                               ;   Parent Loop BB0_3 Depth=1
+                                        ; =>  This Inner Loop Header: Depth=2
+.Ltmp59:
+	.loc	1 900 26                        ; triton_ragged_hstu_attention.py:900:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_u32_e32 v128, s90, v187
+	.loc	1 901 26                        ; triton_ragged_hstu_attention.py:901:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_cmp_gt_i32_e32 vcc, s33, v128
+	.loc	1 918 17                        ; triton_ragged_hstu_attention.py:918:17 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_ashr_i32 s75, s74, 31
+	v_mov_b32_e32 v160, v189
+	v_mov_b32_e32 v161, v189
+	v_mov_b32_e32 v162, v189
+	v_mov_b32_e32 v163, v189
+	.loc	1 918 8 is_stmt 0               ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_and_saveexec_b64 s[0:1], vcc
+	s_cbranch_execz .LBB0_39
+; %bb.38:                               ;   in Loop: Header=BB0_37 Depth=2
+	.loc	1 0 8                           ; triton_ragged_hstu_attention.py:0:8
+	v_lshl_add_u64 v[130:131], s[74:75], 1, v[178:179]
+	.loc	1 918 8                         ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	global_load_dwordx4 v[160:163], v[130:131], off
+.LBB0_39:                               ;   in Loop: Header=BB0_37 Depth=2
+	.loc	1 0 8                           ; triton_ragged_hstu_attention.py:0:8
+	s_or_b64 exec, exec, s[0:1]
+	.loc	1 901 26 is_stmt 1              ; triton_ragged_hstu_attention.py:901:26 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_add_u32_e32 v128, 16, v128
+	v_cmp_gt_i32_e64 s[0:1], s33, v128
+	.loc	1 922 23                        ; triton_ragged_hstu_attention.py:922:23 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_mov_b32_e32 v164, 0
+	v_mov_b32_e32 v165, 0
+	v_mov_b32_e32 v166, 0
+	v_mov_b32_e32 v167, 0
+	.loc	1 918 8                         ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	s_and_saveexec_b64 s[2:3], s[0:1]
+	s_cbranch_execz .LBB0_36
+; %bb.40:                               ;   in Loop: Header=BB0_37 Depth=2
+	.loc	1 918 17 is_stmt 0              ; triton_ragged_hstu_attention.py:918:17 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	v_lshl_add_u64 v[128:129], s[74:75], 1, v[180:181]
+	.loc	1 918 8                         ; triton_ragged_hstu_attention.py:918:8 @[ triton_ragged_hstu_attention.py:1323:12 @[ triton_ragged_hstu_attention.py:1822:16 ] ]
+	global_load_dwordx4 v[164:167], v[128:129], off
+	s_branch .LBB0_36
+.Ltmp60:
+.LBB0_41:                               ; %._crit_edge66
+	.loc	1 1712 4 is_stmt 1              ; triton_ragged_hstu_attention.py:1712:4
+	s_endpgm
+.Ltmp61:
+	.section	.rodata,"a",@progbits
+	.p2align	6, 0x0
+	.amdhsa_kernel _ragged_hstu_attn_bwd
+		.amdhsa_group_segment_fixed_size 0
+		.amdhsa_private_segment_fixed_size 0
+		.amdhsa_kernarg_size 192
+		.amdhsa_user_sgpr_count 16
+		.amdhsa_user_sgpr_dispatch_ptr 0
+		.amdhsa_user_sgpr_queue_ptr 0
+		.amdhsa_user_sgpr_kernarg_segment_ptr 1
+		.amdhsa_user_sgpr_dispatch_id 0
+		.amdhsa_user_sgpr_kernarg_preload_length 14
+		.amdhsa_user_sgpr_kernarg_preload_offset 0
+		.amdhsa_user_sgpr_private_segment_size 0
+		.amdhsa_uses_dynamic_stack 0
+		.amdhsa_enable_private_segment 0
+		.amdhsa_system_sgpr_workgroup_id_x 1
+		.amdhsa_system_sgpr_workgroup_id_y 0
+		.amdhsa_system_sgpr_workgroup_id_z 0
+		.amdhsa_system_sgpr_workgroup_info 0
+		.amdhsa_system_vgpr_workitem_id 0
+		.amdhsa_next_free_vgpr 400
+		.amdhsa_next_free_sgpr 100
+		.amdhsa_accum_offset 256
+		.amdhsa_reserve_vcc 1
+		.amdhsa_reserve_xnack_mask 1
+		.amdhsa_float_round_mode_32 0
+		.amdhsa_float_round_mode_16_64 0
+		.amdhsa_float_denorm_mode_32 3
+		.amdhsa_float_denorm_mode_16_64 3
+		.amdhsa_dx10_clamp 1
+		.amdhsa_ieee_mode 1
+		.amdhsa_fp16_overflow 0
+		.amdhsa_tg_split 0
+		.amdhsa_exception_fp_ieee_invalid_op 0
+		.amdhsa_exception_fp_denorm_src 0
+		.amdhsa_exception_fp_ieee_div_zero 0
+		.amdhsa_exception_fp_ieee_overflow 0
+		.amdhsa_exception_fp_ieee_underflow 0
+		.amdhsa_exception_fp_ieee_inexact 0
+		.amdhsa_exception_int_div_zero 0
+	.end_amdhsa_kernel
+	.text
+.Lfunc_end0:
+	.size	_ragged_hstu_attn_bwd, .Lfunc_end0-_ragged_hstu_attn_bwd
+	.cfi_endproc
+                                        ; -- End function
+	.set _ragged_hstu_attn_bwd.num_vgpr, 256
+	.set _ragged_hstu_attn_bwd.num_agpr, 144
+	.set _ragged_hstu_attn_bwd.numbered_sgpr, 100
+	.set _ragged_hstu_attn_bwd.num_named_barrier, 0
+	.set _ragged_hstu_attn_bwd.private_seg_size, 0
+	.set _ragged_hstu_attn_bwd.uses_vcc, 1
+	.set _ragged_hstu_attn_bwd.uses_flat_scratch, 0
+	.set _ragged_hstu_attn_bwd.has_dyn_sized_stack, 0
+	.set _ragged_hstu_attn_bwd.has_recursion, 0
+	.set _ragged_hstu_attn_bwd.has_indirect_call, 0
+	.section	.AMDGPU.csdata,"",@progbits
+; Kernel info:
+; codeLenInByte = 9900
+; TotalNumSgprs: 106
+; NumVgprs: 256
+; NumAgprs: 144
+; TotalNumVgprs: 400
+; ScratchSize: 0
+; MemoryBound: 1
+; FloatMode: 240
+; IeeeMode: 1
+; LDSByteSize: 0 bytes/workgroup (compile time only)
+; SGPRBlocks: 13
+; VGPRBlocks: 49
+; NumSGPRsForWavesPerEU: 106
+; NumVGPRsForWavesPerEU: 400
+; AccumOffset: 256
+; Occupancy: 1
+; WaveLimiterHint : 1
+; COMPUTE_PGM_RSRC2:SCRATCH_EN: 0
+; COMPUTE_PGM_RSRC2:USER_SGPR: 16
+; COMPUTE_PGM_RSRC2:TRAP_HANDLER: 0
+; COMPUTE_PGM_RSRC2:TGID_X_EN: 1
+; COMPUTE_PGM_RSRC2:TGID_Y_EN: 0
+; COMPUTE_PGM_RSRC2:TGID_Z_EN: 0
+; COMPUTE_PGM_RSRC2:TIDIG_COMP_CNT: 0
+; COMPUTE_PGM_RSRC3_GFX90A:ACCUM_OFFSET: 63
+; COMPUTE_PGM_RSRC3_GFX90A:TG_SPLIT: 0
+	.text
+	.p2alignl 6, 3212836864
+	.fill 256, 4, 3212836864
+	.section	.AMDGPU.gpr_maximums,"",@progbits
+	.set amdgpu.max_num_vgpr, 0
+	.set amdgpu.max_num_agpr, 0
+	.set amdgpu.max_num_sgpr, 0
+	.set amdgpu.max_num_named_barrier, 0
+	.text
+	.section	.debug_abbrev,"",@progbits
+	.byte	1                               ; Abbreviation Code
+	.byte	17                              ; DW_TAG_compile_unit
+	.byte	1                               ; DW_CHILDREN_yes
+	.byte	37                              ; DW_AT_producer
+	.byte	14                              ; DW_FORM_strp
+	.byte	19                              ; DW_AT_language
+	.byte	5                               ; DW_FORM_data2
+	.byte	3                               ; DW_AT_name
+	.byte	14                              ; DW_FORM_strp
+	.byte	16                              ; DW_AT_stmt_list
+	.byte	23                              ; DW_FORM_sec_offset
+	.byte	27                              ; DW_AT_comp_dir
+	.byte	14                              ; DW_FORM_strp
+	.byte	17                              ; DW_AT_low_pc
+	.byte	1                               ; DW_FORM_addr
+	.byte	18                              ; DW_AT_high_pc
+	.byte	6                               ; DW_FORM_data4
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	2                               ; Abbreviation Code
+	.byte	46                              ; DW_TAG_subprogram
+	.byte	0                               ; DW_CHILDREN_no
+	.byte	3                               ; DW_AT_name
+	.byte	14                              ; DW_FORM_strp
+	.byte	32                              ; DW_AT_inline
+	.byte	11                              ; DW_FORM_data1
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	3                               ; Abbreviation Code
+	.byte	46                              ; DW_TAG_subprogram
+	.byte	1                               ; DW_CHILDREN_yes
+	.byte	17                              ; DW_AT_low_pc
+	.byte	1                               ; DW_FORM_addr
+	.byte	18                              ; DW_AT_high_pc
+	.byte	6                               ; DW_FORM_data4
+	.byte	49                              ; DW_AT_abstract_origin
+	.byte	19                              ; DW_FORM_ref4
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	4                               ; Abbreviation Code
+	.byte	29                              ; DW_TAG_inlined_subroutine
+	.byte	1                               ; DW_CHILDREN_yes
+	.byte	49                              ; DW_AT_abstract_origin
+	.byte	19                              ; DW_FORM_ref4
+	.byte	85                              ; DW_AT_ranges
+	.byte	23                              ; DW_FORM_sec_offset
+	.byte	88                              ; DW_AT_call_file
+	.byte	11                              ; DW_FORM_data1
+	.byte	89                              ; DW_AT_call_line
+	.byte	5                               ; DW_FORM_data2
+	.byte	87                              ; DW_AT_call_column
+	.byte	11                              ; DW_FORM_data1
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	5                               ; Abbreviation Code
+	.byte	29                              ; DW_TAG_inlined_subroutine
+	.byte	0                               ; DW_CHILDREN_no
+	.byte	49                              ; DW_AT_abstract_origin
+	.byte	19                              ; DW_FORM_ref4
+	.byte	85                              ; DW_AT_ranges
+	.byte	23                              ; DW_FORM_sec_offset
+	.byte	88                              ; DW_AT_call_file
+	.byte	11                              ; DW_FORM_data1
+	.byte	89                              ; DW_AT_call_line
+	.byte	5                               ; DW_FORM_data2
+	.byte	87                              ; DW_AT_call_column
+	.byte	11                              ; DW_FORM_data1
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	0                               ; EOM(3)
+	.section	.debug_info,"",@progbits
+.Lcu_begin0:
+	.long	.Ldebug_info_end0-.Ldebug_info_start0 ; Length of Unit
+.Ldebug_info_start0:
+	.short	4                               ; DWARF version number
+	.long	.debug_abbrev                   ; Offset Into Abbrev. Section
+	.byte	8                               ; Address Size (in bytes)
+	.byte	1                               ; Abbrev [1] 0xb:0x53 DW_TAG_compile_unit
+	.long	.Linfo_string0                  ; DW_AT_producer
+	.short	2                               ; DW_AT_language
+	.long	.Linfo_string1                  ; DW_AT_name
+	.long	.Lline_table_start0             ; DW_AT_stmt_list
+	.long	.Linfo_string2                  ; DW_AT_comp_dir
+	.quad	.Lfunc_begin0                   ; DW_AT_low_pc
+	.long	.Lfunc_end0-.Lfunc_begin0       ; DW_AT_high_pc
+	.byte	2                               ; Abbrev [2] 0x2a:0x6 DW_TAG_subprogram
+	.long	.Linfo_string3                  ; DW_AT_name
+	.byte	1                               ; DW_AT_inline
+	.byte	3                               ; Abbrev [3] 0x30:0x2d DW_TAG_subprogram
+	.quad	.Lfunc_begin0                   ; DW_AT_low_pc
+	.long	.Lfunc_end0-.Lfunc_begin0       ; DW_AT_high_pc
+	.long	42                              ; DW_AT_abstract_origin
+	.byte	4                               ; Abbrev [4] 0x41:0x1b DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges0                 ; DW_AT_ranges
+	.byte	1                               ; DW_AT_call_file
+	.short	1822                            ; DW_AT_call_line
+	.byte	16                              ; DW_AT_call_column
+	.byte	5                               ; Abbrev [5] 0x4e:0xd DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges1                 ; DW_AT_ranges
+	.byte	1                               ; DW_AT_call_file
+	.short	1323                            ; DW_AT_call_line
+	.byte	12                              ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+.Ldebug_info_end0:
+	.section	.debug_ranges,"",@progbits
+.Ldebug_ranges0:
+	.quad	.Ltmp2-.Lfunc_begin0
+	.quad	.Ltmp3-.Lfunc_begin0
+	.quad	.Ltmp4-.Lfunc_begin0
+	.quad	.Ltmp5-.Lfunc_begin0
+	.quad	.Ltmp6-.Lfunc_begin0
+	.quad	.Ltmp7-.Lfunc_begin0
+	.quad	.Ltmp8-.Lfunc_begin0
+	.quad	.Ltmp11-.Lfunc_begin0
+	.quad	.Ltmp12-.Lfunc_begin0
+	.quad	.Ltmp13-.Lfunc_begin0
+	.quad	.Ltmp14-.Lfunc_begin0
+	.quad	.Ltmp16-.Lfunc_begin0
+	.quad	.Ltmp17-.Lfunc_begin0
+	.quad	.Ltmp19-.Lfunc_begin0
+	.quad	.Ltmp20-.Lfunc_begin0
+	.quad	.Ltmp24-.Lfunc_begin0
+	.quad	.Ltmp25-.Lfunc_begin0
+	.quad	.Ltmp26-.Lfunc_begin0
+	.quad	.Ltmp27-.Lfunc_begin0
+	.quad	.Ltmp28-.Lfunc_begin0
+	.quad	.Ltmp29-.Lfunc_begin0
+	.quad	.Ltmp31-.Lfunc_begin0
+	.quad	.Ltmp32-.Lfunc_begin0
+	.quad	.Ltmp33-.Lfunc_begin0
+	.quad	.Ltmp34-.Lfunc_begin0
+	.quad	.Ltmp35-.Lfunc_begin0
+	.quad	.Ltmp36-.Lfunc_begin0
+	.quad	.Ltmp37-.Lfunc_begin0
+	.quad	.Ltmp38-.Lfunc_begin0
+	.quad	.Ltmp39-.Lfunc_begin0
+	.quad	.Ltmp40-.Lfunc_begin0
+	.quad	.Ltmp41-.Lfunc_begin0
+	.quad	.Ltmp42-.Lfunc_begin0
+	.quad	.Ltmp43-.Lfunc_begin0
+	.quad	.Ltmp44-.Lfunc_begin0
+	.quad	.Ltmp45-.Lfunc_begin0
+	.quad	.Ltmp46-.Lfunc_begin0
+	.quad	.Ltmp60-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges1:
+	.quad	.Ltmp2-.Lfunc_begin0
+	.quad	.Ltmp3-.Lfunc_begin0
+	.quad	.Ltmp6-.Lfunc_begin0
+	.quad	.Ltmp7-.Lfunc_begin0
+	.quad	.Ltmp9-.Lfunc_begin0
+	.quad	.Ltmp10-.Lfunc_begin0
+	.quad	.Ltmp15-.Lfunc_begin0
+	.quad	.Ltmp16-.Lfunc_begin0
+	.quad	.Ltmp18-.Lfunc_begin0
+	.quad	.Ltmp19-.Lfunc_begin0
+	.quad	.Ltmp20-.Lfunc_begin0
+	.quad	.Ltmp21-.Lfunc_begin0
+	.quad	.Ltmp22-.Lfunc_begin0
+	.quad	.Ltmp23-.Lfunc_begin0
+	.quad	.Ltmp30-.Lfunc_begin0
+	.quad	.Ltmp31-.Lfunc_begin0
+	.quad	.Ltmp47-.Lfunc_begin0
+	.quad	.Ltmp48-.Lfunc_begin0
+	.quad	.Ltmp49-.Lfunc_begin0
+	.quad	.Ltmp50-.Lfunc_begin0
+	.quad	.Ltmp51-.Lfunc_begin0
+	.quad	.Ltmp52-.Lfunc_begin0
+	.quad	.Ltmp53-.Lfunc_begin0
+	.quad	.Ltmp54-.Lfunc_begin0
+	.quad	.Ltmp55-.Lfunc_begin0
+	.quad	.Ltmp56-.Lfunc_begin0
+	.quad	.Ltmp57-.Lfunc_begin0
+	.quad	.Ltmp58-.Lfunc_begin0
+	.quad	.Ltmp59-.Lfunc_begin0
+	.quad	.Ltmp60-.Lfunc_begin0
+	.quad	0
+	.quad	0
+	.section	.debug_str,"MS",@progbits,1
+.Linfo_string0:
+	.asciz	"triton"                        ; string offset=0
+.Linfo_string1:
+	.asciz	"triton_ragged_hstu_attention.py" ; string offset=7
+.Linfo_string2:
+	.asciz	"/workspace/projects/triton-mi300/hstu_attn" ; string offset=39
+.Linfo_string3:
+	.asciz	"_ragged_hstu_attn_bwd"         ; string offset=82
+	.section	".note.GNU-stack","",@progbits
+	.amdgpu_metadata
+---
+amdhsa.kernels:
+  - .agpr_count:     144
+    .args:
+      - .address_space:  global
+        .offset:         0
+        .size:           8
+        .value_kind:     global_buffer
+      - .address_space:  global
+        .offset:         8
+        .size:           8
+        .value_kind:     global_buffer
+      - .address_space:  global
+        .offset:         16
+        .size:           8
+        .value_kind:     global_buffer
+      - .address_space:  global
+        .offset:         24
+        .size:           8
+        .value_kind:     global_buffer
+      - .address_space:  global
+        .offset:         32
+        .size:           8
+        .value_kind:     global_buffer
+      - .address_space:  global
+        .offset:         40
+        .size:           8
+        .value_kind:     global_buffer
+      - .address_space:  global
+        .offset:         48
+        .size:           8
+        .value_kind:     global_buffer
+      - .address_space:  global
+        .offset:         56
+        .size:           8
+        .value_kind:     global_buffer
+      - .address_space:  global
+        .offset:         64
+        .size:           8
+        .value_kind:     global_buffer
+      - .address_space:  global
+        .offset:         72
+        .size:           8
+        .value_kind:     global_buffer
+      - .offset:         80
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         84
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         88
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         92
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         96
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         100
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         104
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         108
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         112
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         116
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         120
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         124
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         128
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         132
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         136
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         140
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         144
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         148
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         152
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         156
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         160
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         164
+        .size:           4
+        .value_kind:     by_value
+      - .offset:         168
+        .size:           4
+        .value_kind:     by_value
+      - .address_space:  global
+        .offset:         176
+        .size:           8
+        .value_kind:     global_buffer
+      - .address_space:  global
+        .offset:         184
+        .size:           8
+        .value_kind:     global_buffer
+    .group_segment_fixed_size: 0
+    .kernarg_segment_align: 8
+    .kernarg_segment_size: 192
+    .max_flat_workgroup_size: 256
+    .name:           _ragged_hstu_attn_bwd
+    .private_segment_fixed_size: 0
+    .sgpr_count:     106
+    .sgpr_spill_count: 13
+    .symbol:         _ragged_hstu_attn_bwd.kd
+    .uniform_work_group_size: 1
+    .uses_dynamic_stack: false
+    .vgpr_count:     400
+    .vgpr_spill_count: 0
+    .wavefront_size: 64
+amdhsa.target:   amdgcn-amd-amdhsa--gfx950
+amdhsa.version:
+  - 1
+  - 2
+...
+
+	.end_amdgpu_metadata
+	.section	.debug_line,"",@progbits
+.Lline_table_start0:
